@@ -1,2 +1,5 @@
 # reffort.github.io
-Documentation
+This repository contains documentation files for using the typographical
+modifications to n-t-roff.
+
+
