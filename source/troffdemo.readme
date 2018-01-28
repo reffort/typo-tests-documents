@@ -1,0 +1,49 @@
+README for the Heirloom Troff Demonstration Page
+================================================
+
+To build this document, you either need the Type 1 Adobe
+Caslon font including the Expert sets, or its OpenType
+variant Adobe Caslon Pro, and need to set the TROFFONTS
+variable accordingly. Adobe Caslon Pro is available as
+part of the "Adobe Type Basics OpenType Edition" package.
+
+Note that as of autumn 2005, it was not possible to
+download fonts bought directly from Adobe using a Linux
+system. There are many other shops that sell Adobe fonts,
+though, and these usually allow downloads for Linux users.
+
+Gunnar Ritter					01/08/07
+
+---
+
+This version of the Troff Demonstration Page has been modified to use the new
+paragraphing and letter adjustment additions, and the text has been lightly
+updated.  Some glyph names have been modified to support a newer version of
+Adobe Caslon Pro.
+
+Select the font format by editing the line 
+	.nr O 1
+near the top of the source file.  A '1' uses the OpenType fonts (the default),
+'0'uses the Type 1 fonts.
+
+
+To build the demo page:
+-----------------------
+# Set environment variables for PATH and TROFFONTS so they point to the
+# test n-t-roff installation and fonts directory, and EXPORT them to the shell:
+
+PATH=[yourinstalldirectory]/ucb:$PATH
+TROFFONTS=[yourfontdirectory]
+EXPORT PATH TROFFONTS
+
+# Then execute:
+
+troff troffdemo.tr | dpost | ps2pdf -dPDFSETTINGS=/prepress - troffdemo.pdf
+
+# If the ps2pdf utility is not installed on your system, you'll need to do
+# something like:
+#
+#	troff troffdemo.tr | dpost |
+#	gs -dPDFSETTINGS=/prepress -sOUTPUTFILE=troffdemo.pdf -sDEVICE=pdfwrite -
+
+								rwf 1/27/18

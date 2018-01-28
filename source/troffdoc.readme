@@ -1,0 +1,39 @@
+README for the Heirloom Documentation Tools Reference Manual
+============================================================
+
+To build the reference manual, you need to download the
+OpenType variants of TeX Gyre Termes fonts available for
+free from <http://www.janusz.nowacki.strefa.pl/>, and
+to set the TROFFONTS variable such that it includes them.
+
+Gunnar Ritter					01/08/07
+
+----
+
+As of 2018 the above link no longer works, but the Termes fonts are available
+from <https://ctan.org/pkg/tex-gyre-termes>.
+
+This version of the Troff User's Manual demonstrates the "Improvements to the
+line adjusting mechanism" described in the first paragraph on page 2, along
+with the new paragraphing and letter adjustment additions.
+
+I've taken the liberty of modifying several minor typographical inconsistencies
+on the first three pages, added a tab to a few columns that no longer aligned,
+and set off one code example that when formatted wound up with a line break in
+the middle.  The glaring factual error in the first paragraph of section 1.1
+and its pervasive propagation in various forms throughout the document are
+legacy features.
+
+
+To build the PDF:
+
+tbl -g < troffdoc.tr | troff -mgchar | dpost |
+ps2pdf -dPDFSETTINGS=/prepress - troffdoc.pdf
+
+... or to build the pdf with gs instead of the ps2pdf utility:
+
+gs -sOutputFile=troffdoc.pdf -sDEVICE=pdfwrite -q \
+   -sProcessColorModel=DeviceGray -dPDFSETTINGS=/prepress -
+
+								rwf 01/27/18
+
