@@ -1,0 +1,408 @@
+.\" Figure 2
+.\"
+.\" These need to be defined if making a standalone graph
+.do xflag 3
+.ds troff Troff
+.
+.\"bp
+.EQ
+delim $$
+gsize 8
+.EN
+.
+.ti +0
+.ps 10
+.
+.G1
+
+# The word space boundaries alter the width of the penalty curve
+# Adjust as desired
+wslwr = 0.80		# 0.667
+wsupr = 1.33		# 1.5
+minss = 0.667
+wsmin = 0		# 0.70
+
+# scale for fitness classes
+normalizedfc = 0	# 0 | 1
+thresh1 = 10/12		# 0.833...
+thresh2 = 1.25
+
+# adjpenalty
+adjpenalty = 0		#0.50
+adjlwr = 0.80		# lower decent class threshold if not normalized
+adjupr = 1.30		# upper decent classh threshold if not normalized
+
+hypp = 0.50
+
+# letthresh
+letthreshlwr = 0.92	# 0.86	# .83
+letthreshupr = 1.12	# 1.25	# 1.29
+
+# Begin
+
+.ps 9
+.vs 9p
+# frame ht 4.75 wid 3.5 invis
+frame ht 4.92 wid 3.63 invis
+coord x 0.55, 1.65 y -1.0, 2.7
+xmin = 0.55
+xmax = 1.65
+ymax = 2.7
+ymin = -1.0
+ticks left from 0.5 to 2.5 by 0.5 ""
+ticks left out 0.0375 from 0.0 to 2.5 by 0.1 ""
+# ticks right from 0.5 to 2.5 by 0.5 ""
+# ticks right out 0.0375 from 0.1 to 2.5 by 0.1 ""
+ticks bot off
+line from xmin, 0 to xmax, 0
+line from xmax, 0 to xmax, ymax
+line from xmax, ymax to xmin, ymax
+line from xmin, ymax to xmin, 0
+
+# label the tick marks in user values
+for yy = 50 to 250 by 50 do {
+  sprintf ("%.0f", yy) rjust at 0.5, yy / 100
+}
+
+# left edge of the table grid
+lmin = 0.29 # 0.31
+
+# center the y label
+"\fI\s10t  \s0\fP" at lmin + (xmin - lmin) * 0.33, ymax / 2
+# "$penalty over 100$" at lmin + (xmin - lmin) * 0.33, ymax / 2 - 0.25
+
+# grid at the bottom
+
+line from xmax, 0 to xmax, ymin
+line from xmax, ymin to lmin, ymin
+line from lmin, ymin to lmin, 0
+line from xmin, ymin to xmin, 0
+
+# horiz. grid lines
+for i from 0 to 1 by 0.2 do {
+	line from lmin, -i to xmax, -i
+}
+
+# left edge of row labels
+tstart = lmin + 0.01
+
+# set the window
+
+# wslwr = 0.667 #0.75 #2/3 # 0.75
+# wsupr = 1.5 # 1.4 # 1.5 # 1.4
+
+# minlwr and wsupr
+
+line from wslwr, 0 to wslwr, 1.6 dashed 0.025
+line from wsupr, 0 to wsupr, 1.6 dashed 0.025
+sprintf ("\fIwsupr\fP = %.0f%% ", wsupr * 100) size 8 rjust below at wsupr, 1.6
+sprintf (" \fIwslwr\fP = %.0f%%", wslwr * 100) size 8 ljust below at wslwr, 1.6
+
+# wsmin
+if (wsmin > 0.60) then {
+	line from wsmin, 0 to wsmin, 1.8 dashed 0.025
+	sprintf (" \fIwsmin\fP = %.1f%%", wsmin * 100) size 8 ljust below at wsmin, 1.8
+}
+
+# minss
+if (minss > 0.60) then {
+	line from minss, 0 to minss, 1.8 solid
+#	sprintf (" \fIminss\fP = %.1f%% ", minss * 100) size 8 ljust at minss, 1.9
+	sprintf ("\fIminss =\fP") size 8 above at minss, 1.9
+	sprintf ("%.1f%%", minss * 100) size 8 below at minss, 1.9
+}
+
+# letthresh
+lty = 1.32
+if (letthreshlwr > 0.60) then {
+	line from letthreshlwr, 0 to letthreshlwr, 1.2 dotted 0.025
+#	sprintf (" \fIletthreshlwr\fP = %.1f%% ", letthreshlwr * 100) size 8 ljust below at letthreshlwr, 1.4
+	sprintf ("\fIletthreshlwr\fP") size 8 above at letthreshlwr, lty
+	sprintf ("= %.0f%%", letthreshlwr * 100) size 8 below at letthreshlwr, lty
+}
+if (letthreshupr > 0.60) then {
+	line from letthreshupr, 0 to letthreshupr, 1.2 dotted 0.025
+#	sprintf (" \fIletthreshupr\fP = %.1f%% ", letthreshupr * 100) size 8 rjust below at letthreshupr, 1.3
+	sprintf ("\fIletthreshupr\fP") size 8 above at letthreshupr, lty
+	sprintf ("= %.0f%%", letthreshupr * 100) size 8 below at letthreshupr, lty
+}
+
+
+# line between good and bad
+
+line dashed 0.025 from xmin, 1 to xmax, 1
+"``Good''" size 8 below at (wslwr+wsupr)/2, 0.98
+# "``Bad''"  size 8 at (xmin+wslwr)/2, 1.05
+"``Bad''"  size 8 above at 0.73, 1.0
+"``Bad''"  size 8 above at (xmax+wsupr)/2, 1.0
+
+# hyphenation penalty
+
+if (hypp > 0) then {
+	line dotted 0.1 from xmin + 0.01, hypp to xmax, hypp
+#	" \|@i[hypp]@-[1] = 50"  size 8 ljust at xmin, hypp+0.05
+	"\^$hypp sub 1$ = 50"  size 8 ljust at xmin, hypp+0.05
+}
+
+# draw the curves
+
+#	draw xq solid		# multi mongrel
+#	draw qc solid		# quadratic
+#	draw cc dashed 0.02	# cubic
+#	draw tc solid		# tex
+#	draw oc1 solid		# quartic
+#	draw nc1 dashed 0.01	# quintic
+#	draw nc2 dashed 0.01	# quintic
+#	draw hc dashed 0.01	# heirloom
+draw c6 solid		# r^6
+#	draw c7 dotted 0.02
+#	draw c8 dotted 0.02
+#	draw c9 dotted 0.02
+##	draw tc0 dashed 0.02
+draw ap solid		# adjacent penalty
+
+yclip = 2.7
+for j from 0.55 to 1.65 by 0.005 do {
+	if (j < 1.0) then { i = (1 - j) / (1.0 - wslwr) } else { i = (j - 1) / (wsupr - 1.0) }
+	yval = i ;
+#	if (yval < yclip) then { next xq at j, yval }
+#
+#	yval = (i^2) # +hypp)^2
+#	if (yval < yclip) then { next qc at j, yval }
+#
+#	yval = i^3
+#	if (yval < yclip) then { next cc at j, yval }
+#	yval = i^4
+#	if (yval < yclip) then { next oc1 at j, yval }
+#	yval = i^5
+#	if (yval < yclip) then { next nc1 at j, yval }
+#		if (j < wslwr) then { next nc1 at j, yval }
+#		if (j > wsupr) then { next nc2 at j, yval }
+#
+#	yval = (1+(100*i^3)^2)/10000
+#
+	yval = i^6
+	if (yval < yclip) then { next c6 at j, yval }
+#
+#	curve 12
+#	yval = (0.1 + i^3)^2 - 0.01
+#	if (yval < yclip) then { next c7 at j, yval }
+#
+#	yval = i^7
+#	if (yval < yclip) then { next c7 at j, yval }
+#	yval = i^8
+#	if (yval < yclip) then { next c8 at j, yval }
+#	yval = i^9
+#	if (yval < yclip) then { next c9 at j, yval }
+#	yval = (1+(100*i^3+10)^2)/10000
+#	if (yval < yclip) then { next tc0 at j, yval }
+#	yval = i^4 + 0.5 * i^2
+#	if (yval < yclip) then { next tc0 at j, yval }
+#
+	yval = 0
+	if (adjpenalty > 0) then {
+		if (j <= adjlwr) then { yval = adjpenalty }
+		if (j >= adjupr) then { yval = adjpenalty }
+	}
+	next ap at j, yval
+
+}
+
+# draw the Heirloom curve
+
+# xofs = 0
+# yofs = 0
+# for j from 0.55 to 1.65 by 0.025 do {
+#	if (j >= 1.0) then { i = (j - 1) * 5 / 3 } else { i = 1 - j }
+#	next hc at j, i^3
+#	circle at j+xofs, i^3+yofs radius 0.025
+# }
+
+# draw a custom curve
+
+if (0) then {
+ccwslwr = 0.667
+ccwsupr = 1.33
+draw cc dashed
+xofs = 0
+yofs = 0 #0.007
+for j from 0.55 to 1.65 by 0.025 do {
+#	if (j >= 1.0) then { i = (j - 1) * 5 / 3 } else { i = 1 - j }
+	if (j < 1.0) then { i = (1 - j) / (1.0 - ccwslwr) } else { i = (j - 1) / (ccwsupr - 1.0) }
+	yval = i^6 ;
+	if (yval < yclip) then { next cc at j, yval }
+#	circle at j+xofs, i^3+yofs radius 0.025
+}
+}
+
+# raw adjustment ratio
+
+yofs = 0
+yu = 0
+yl = -0.2
+ym = -0.1
+lblofs = 0 # -0.03
+for i from 0.65 to 1.6 by 0.1 do {
+	line from i, yu to i, yu + 0.25 * (yl - yu)
+}
+for i from 0.6 to 1.6 by 0.1 do {
+	line from i, yu to i, yu + 0.42 * (yl - yu)
+	sprintf ("%.0f", i * 100) at i, yu + 0.75 * (yl - yu)
+}
+"Space Size" ljust "Ratio (%) \ \fIR\fP" at tstart, ym + lblofs
+
+
+# troff ss units
+
+yu = -0.2
+yl = -0.4
+ym = -0.3
+for i from 7 to 19 by 1 do {
+	j = i / 12
+	line from j, yu to j, yu + 0.42 * (yl - yu)
+	sprintf ("%.0f",i) at j, yu + 0.75 * (yl - yu)
+}
+"\*[troff] .ss units" ljust at tstart, -0.3+lblofs
+
+
+# bin classes
+
+b=0
+ticklen = 0.05
+yu = -0.4
+ym = -0.5
+yl = -0.6
+prevx = xmin
+for i from -1.25 to 1.25 by 0.25 do {
+	if (i < 0) then {
+		xbin = i * 1/3 + 1
+	} else {
+		xbin = i * 0.5 + 1
+	}
+	if (i >= -1.25 && i != 0) then {
+		line from xbin, yu to xbin,yl
+		if (b > 0) then {
+			sprintf("%.0f",b) at (prevx + xbin) / 2, ym + lblofs
+		}
+		b = b+1
+		prevx = xbin
+	}
+}
+"Space Size Bin" ljust at tstart, ym + lblofs
+
+# fitness classes
+
+yu = -0.6
+yl = -0.8
+ym = (yu+yl)/2
+
+if (normalizedfc == 1) then {
+	ld = -0.5 * (1-wslwr) + 1
+	lt = -1.0 * (1-wslwr) + 1
+	ud = 0.5 * (wsupr-1) + 1
+	ul = 1.0 * (wsupr-1) + 1
+} else {
+	lt = 2 * thresh1 - 1
+	ld = thresh1
+	ud = thresh2
+	ul = 2 * thresh2 - 1
+}
+
+line from ld,yu to ld,yl
+line from lt,yu to lt,yl
+line from ud,yu to ud,yl
+line from ul,yu to ul,yl
+
+xt = (lt + ld) / 2
+xd = (ld + ud) / 2
+xl = (ud + ul) / 2
+xv = ul
+
+if (((xv - xmin) / (xmax - xmin)) < 0.84) then {
+	xv = (xv + xmax) / 2
+} else {
+	xv = 0
+}
+"Fitness Class" ljust at tstart, ym + lblofs
+"Tight" at xt, ym + lblofs
+"Decent" at xd, ym + lblofs
+"Loose" at xl, ym + lblofs
+if (xv > 0) then { "Very Loose" at xv, ym + lblofs }
+
+# normalized adjustment ratio
+
+yu = -0.8
+yl = -1.0
+ym = -0.9
+for k from -200 to 200 by 025 do {
+	i = k / 100
+	if (i < 0) then {
+		j = i * (1-wslwr) + 1
+	} else {
+		j = i * (wsupr-1) + 1
+	}
+	if (j > xmin && j < xmax) then {
+		if ( int(k/50)==k/50) then {
+			line from j, yu to j, yu + 0.42 * (yl - yu)
+			sprintf ("%.2f", i) at j, yu + 0.8 * (yl - yu) + lblofs
+		} else {
+			line from j, yu to j, yu + 0.25 * (yl - yu)
+		}
+	}
+}
+"Normalized" ljust "Adjust. Ratio \fIr\fP" at tstart, ym  + lblofs
+
+# equations
+
+x1 = 0.85 # 0.75
+x2 = x1 + 0.05
+x3 = x2 + 0.025
+
+#circle at x1, 2.5 radius 0.025
+#circle at (x1+x2)/2, 2.5 radius 0.025
+#circle at x2, 2.5 radius 0.025
+#"Heirloom mode" ljust at x3, 2.5
+#
+#line from x1, 2.4 to x2, 2.4 dotted
+#"$t~=~|r| sup 2$" ljust at x3, 2.4
+
+#line from x1, 2.3 to x2, 2.3 dashed 0.02
+#"$t~=~|r| sup 3$" ljust at x3, 2.3
+
+#line from x1, 2.2 to x2, 2.2 dotted 0.02
+#"$t~=~|r| sup 4$" ljust at x3, 2.2
+
+#line from x1, 2.1 to x2, 2.1 dashed 0.01
+#"$t~=~|r| sup 5$" ljust at x3, 2.1
+## "$t~=~|r| sup 5$ for $|r| >~1.0$ only" ljust at x3, 2.1
+
+# line from x1, 2.0 to x2, 2.0 solid
+"$t~=~100~r sup 6$" ljust at 0.78, 2.5
+# "$t~=~(0.10~+~|r| sup 3 ) sup 2~-~0.01$" ljust at 0.78, 2.5
+
+# line from x1, 1.95 to x2, 1.95 solid
+# "$t~=~{( 1 + 100 |r| sup 3 ) sup 2 } over 10000~approx~r sup 6$" ljust at x3, 1.97
+
+.G2
+
+.ig
+
+.@Begin FigureCaption above 1.25v
+@b[Figure 2:] Diagram of the paragraph settings of Figure 1
+.@End
+.@Label SchematicFigure
+
+.@Begin Captiontext
+The U-shaped curve represents the word space penalty @i[t] defined by
+@req[.wscalc\~6] and @req[.wrdspc\~80\~133].  The range of preferred space sizes
+is 80% to 133% of the desired space size @req[.ss\~12], and the minimum space
+size is 66.7% (@req[.minss\~8]).  If the space size ratio @i[R] is between
+92% and 112% (@req[.letthresh\~92\~112]), no letter adjustment is applied.
+Fitness classes are the standard \*[TeX] classes.
+
+Penalties are added to the word space penalty curve, shifting it vertically
+by the amount of the penalty.  If the line were hyphenated, the entire curve
+would be shifted upward by the value of @i[hypp]@-[1] (50).
+.@End Captiontext
+
+..

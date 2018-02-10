@@ -1,0 +1,251 @@
+.@Begin Text
+.pn 1
+.af % 1
+
+.@H1 INTRODUCTION
+.@Pageheading center "introduction"
+.@Labeli introduction
+
+This document describes a group of features designed to improve the uniformity of word spaces, the quality of line breaks and paragraph composition, and enhance the overall page appearance. There are also new methods and controls for letter adjustment (``microtypography''), and a mechanism for identifying troublesome areas that may benefit from individual attention. These features build on the improvements introduced in Heirloom \*[troff] and brought forward in \*[ntroff].
+
+In paragraph adjust mode Heirloom uses a dynamic programming method similar to the one used by \*[TEX]. For each potential line break, characteristics that are important to good paragraph composition are graded and assessed a penalty for deviations from the desired value. After the entire paragraph has been analyzed, the combination of line breaks with the lowest total penalty is selected as the ``least bad.''
+
+The word space, line breaking, and letter adjustment features are designed for paragraph adjust mode, but, like Heirloom, letter adjustment also works in single line mode. The features are implemented through a set of requests that provide controls for different aspects of paragraph composition. The controls can be adjusted to favor better line breaks, less hyphenation, more uniform word spaces, or balance them for a given text and page design. When troublesome paragraphs occur, the controls can be readjusted to alter the characteristics.
+
+The new controls essentially provide a different way of using the existing code.
+The new code was added in a (mostly) plug-in fashion: \*[ntroff] was modified
+only as necessary to splice in the new controls.  By default, the
+Heirloom/\*[ntroff] code runs and the new features are turned off.
+They are best used in extension level\~3, and are activated by issuing
+requests that make use of them.  They are available only to \*[troff],
+as \*[nroff] has no typesetting capabilities.
+
+Each of the paragraph characteristics is assigned a relative importance
+(penalty), and the characteristics compete against each other in a multi-way
+tug o' war.  The most neutral balance (lowest total penalty) for the entire
+paragraph is deemed the ``best'' paragraph.  The requests that control the
+characteristics can be grouped as follows:
+
+
+.@Begin Glossaryinsert above 0
+
+.@H4 WORD SPACE CONTROL
+
+@req[.wrdspc] : Sets the range of preferred space sizes.  A wider range allows more variation, tends to reduce hyphenation, and allows better line breaks at the cost of reduced word space consistency.
+
+@req[.wscalc] : Determines the tolerance for loose or tight spaces relative to the desired size, based on the range established by @req[.wrdspc].
+
+@req[.wsmin] establishes a soft minimum word space size.  It provides better resolution than the hard limit imposed by @req[.minss].
+
+
+.@H4 LETTER ADJUSTMENT
+
+@req[.letcalc] : Determines the way letter adjustment is applied, and whether it is distributed among the glyphs or among the glyphs and spaces.
+
+@req[.letthresh] : Reserves a region around the desired space size in which no letter adjustment is applied, thereby reducing the overall amount of letter adjustment in the paragraph.
+
+@req[.letpen] : Determines whether the effects of letter adjustment are taken into account when the line breaks are determined; can also apply a penalty to reduce excessive use.
+
+@req[.adjletpen] : Disfavors adjacent lines if one uses a lot of letter stretch and the other uses a lot of letter shrink.
+
+@req[.letstren] : Modifies the rate of application.  If the strength is zero, the line's natural proportions are taken into account.
+
+@req[.letadj] : The function of the space size threshold (the third argument) has been replaced by @req[.letthresh] when the new letter adjust methods are in use.  Heirloom letter adjustment is not affected.
+
+
+.@H4 PARAGRAPH COMPOSITION
+
+@req[.adjpenalty] :
+Disfavors consecutive lines when one is loose and the other is tight.
+
+@req[.elppen] : Favors or disfavors lines ending with a punctuation character.
+A companion request @req[.elpchar] permits a custom list of characters.
+
+@req[.lastlinestretch] : Stretches the last line to full measure if its natural
+length falls within one en of the line length.
+
+@req[.linepenalty] : Introduces a bias toward shorter paragraphs.
+
+@req[.looseness] : Makes the paragraph shorter or longer.  This is useful when
+eliminating a widow line or avoiding some other layout problem.
+
+@req[.overrunpenalty] : Progressively discourages last lines that are shorter
+than a user-specified length, and prevents lines that are too short.
+
+@req[.rhanglevel] : Defines whether hanging punctuation and right margin kerning
+are taken into account when determining line breaks.
+
+
+.@H4 HYPHENATION
+
+@req[.exhyp] : Discourages lines that end with a discretionary hyphen, as is
+used in hyphenated compound words.
+
+@req[.hypp] : Hyphenation penalties are applied differently in order to obtain
+a better tradeoff between space size and end-of-line hyphenation.  The behavior
+is more predictable and the penalty values have the same scale as all other
+penalties.  Heirloom mode is not affected.  A new argument @i[hypp]@-[4]
+discourages hyphenating the penultimate line of the paragraph.
+
+
+.@H4 MONITORING AND FEEDBACK
+
+@req[.wsmark] : Places a number in the margin indicating the space size for
+each line.  Useful for working with problem paragraphs.
+
+@req[.wswarn] : Similar to @req[.wsmark], but flags lines with space sizes
+smaller or larger than user-specified values, and optionally writes a message
+to @cmd[stderr].  It is useful for finding loose or tight lines over a large
+portion of a document.
+
+.@End Glossaryinsert
+
+The applicable requests need to be invoked only once, but if they are changed
+elsewhere in the document, for example, to deal with a problem paragraph, they
+should probably be restored to their initial settings.  The paragraph macro is
+a convenient place to do this.  The following example lists the normal settings
+used for this document:
+
+.@Newpage
+
+.@Begin Example2 spacemode yes above 2v below 0
+.@Labeli MacroPage
+.
+ .do xflag 3
+ .padj
+\ \ \ . . .
+ .de pg
+ .	br
+ .	ft \*[Style_font_]
+ .	ps \*[Style_size_]
+ .	vs \*[Style_spacing_]
+ .	ti \*[Style_indent_]
+ .	ss \n[.ss] \n[.sss]
+ .	minss \n[.minss]
+ .	hypp \n[.hypp] \n[.hypp2] \n[.hypp3] \n[.hypp4]
+ .	wrdspc \n[.wslwr] \n[.wsupr]
+ .	wscalc \n[.wscalc]
+ .	wsmin \n[.wsmin]
+ .	adjpenalty \n[.adjpenalty] \n[.adjthreshold] \n[.adjthreshupr]
+.	nrf tmpflt \n[.overrunmin]/1000
+ .	overrunpenalty \n[.overrunpenalty] \n[.overrunthreshold] \n[tmpflt]p
+.	rr tmpflt
+ .	linepenalty \n[.linepenalty]
+ .	lastlinestretch \n[.lastlinestretch]
+.	\"\&.looseness \n[.looseness]
+ .	exhyp \n[.exhyp]
+ .	elppen \n[.elppen]
+.	\"\&.elpchar \n[.elpchar]
+ .	rhanglevel \n[.rhanglevel]
+ .	letcalc \n[.letcalc]
+ .	letadj \n[.lspmin] \n[.lshmin] \n[.letss] \n[.lspmax] \n[.lshmax]
+ .	letthresh \n[.letthreshlwr] \n[.letthreshupr]
+ .	letstren \n[.letstren]
+ .	letpen \n[.letpen] \n[.letpenlwr] \n[.letpenupr]
+ .	adjletpen \n[.adjlapenalty] \n[.adjlathreshold]
+ ..
+.@End Example2
+
+.@Caption "@b[Figure 1:] Sample paragraph settings"
+
+.@Newpage
+
+The requests beginning with @req[.wrdspc] define the new methods and
+constraints, and the tradeoffs to be made among the paragraph's characteristics.
+The major characteristics are graphed in Figure\~2 on
+page\~@pageref[SchematicFigure].
+
+
+.@Begin Glossaryinsert
+
+@req[.do xflag 3] : Initiates extension level 3, enabling the long request names
+needed by these features.  Paragraph-at-once mode, set by @req[.padj] or
+@req[.ad\~p], is required for most of them.
+
+@req[.hypp 50 100 100 50] : The fourth argument discourages hyphenating the
+penultimate line of a paragraph.  If the last word is hyphenated, the third
+penalty is applied instead.  These penalty values disfavor hyphenating the last
+word more than the penultimate line.
+
+@req[.wrdspc 80 133] : Defines the preferred space sizes to be from 80% to 133%
+of the desired size established by @req[.ss 12].  Spaces smaller than 80% or
+larger than 133% are discouraged at a higher marginal rate than spaces within
+the range.  The minimum space size is set by @req[.minss], the maximum is
+limited by the line length.
+
+.\" Prevent a widow line on the next page
+.looseness -1
+@req[.wscalc 6] : Defines the shape of the curve that is used to grade the
+word spaces. This is a sixth-order curve, with a relatively flat base and
+steep skirts; it lightly penalizes spaces that are close to the desired size
+and sharply penalizes those beyond the values set by @req[.wrdspc].
+
+@req[.wsmin 0] : Defines a soft minimum space size.  The argument 0 switches
+the feature off; the minimum is enforced by @req[.minss].
+
+@req[.adjpenalty 50 80 130] : Adjacent line incompatibility penalty; it applies
+a penalty of 50 to consecutive lines if one has spaces smaller than 80% and the
+other has spaces larger than 130%.
+
+@req[.overrunpenalty 10 25 16p] : Discourages the last line of a paragraph from
+being shorter than 25% of full measure and prevents lines shorter than 16 points.
+
+@req[.linepenalty 1] : Slightly favors shorter paragraphs.
+
+@req[.lastlinestretch 1] : If the natural length of the last line falls within
+one en of full measure, the line is stretched to be fully justified.
+
+@req[.exhyp 50] : The penalty for breaking a line at an explicit hyphen is 50.
+
+@req[.elppen \-3] : Lines that end with a punctuation character (excluding
+hyphens) are penalized by \-3 (a bonus of 3) to slightly encourage placing
+punctuation at the end of a line.
+
+@req[.rhanglevel 2] : Takes right margin kerning and its effect on space size
+into account when determining line breaks.
+
+@req[.letcalc 4] :
+Distributes letter adjustment among the glyphs and spaces.
+This method provides very good line breaks and page color.
+
+@req[.letadj 98 100 12 101.5 100] :  Enables dynamic letter spacing within a
+range of \-2% to +1.5% of an en (\-1% to +0.75% of an em).
+
+@req[.letthresh 92 112] :  Establishes a region between 92% and 112% of the
+nominal space size in which letter adjustment is not applied.
+If the space size crosses either threshold, letter adjustment is applied.
+
+@req[.letstren 100] :  Letter adjustment is applied at the normal rate (100%).
+
+@req[.letpen 8 1 1] :  Letter adjustment's effect on the space size is
+taken into account when determining line breaks, and a penalty of 8 is
+applied if the total amount of letter adjustment exceeds \[+-]1%.
+
+@req[.adjletpen 2 100] :  A small penalty of 2 is applied when consecutive
+lines have incompatible letter adjustment (they differ by more than \[+-]100%
+of the amount specified by @req[.letpen]).
+
+.@End Glossaryinsert
+
+
+It isn't necessary to manually set all of these values if you are using one of
+the presets (@req[.wscalc\~0], @req[10], @req[11], or @req[12]).
+The presets initialize some of the paragraph controls (the requests @req[.hypp]
+through @req[.elppen] in Figure\~1), so it would only be necessary to make
+additional requests to configure the paragraph and letter adjust parameters
+that are not initialized by the preset, or to change a default setting.
+
+The current values of the parameters are accessible through the read-only
+number registers listed on page\~@pageref[table:readonlyregisters].  All values
+are held in the \*[troff] environment and can be customized for each environment.
+
+For more information on the concepts of paragraph optimization and
+microtypography, see:
+
+.@Begin Itemize spread 0.25v
+Donald E. Knuth and Michael F. Plass, ``Breaking Paragraphs Into Lines''\|[1];
+
+\*[hanthanh], ``Micro-typography Extensions to the \*[TeX] Typesetting System''\|[2];
+
+Gunnar Ritter, ``Justification in Heirloom Troff''\|[3].
+.@End Itemize

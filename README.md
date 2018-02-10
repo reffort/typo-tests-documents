@@ -13,5 +13,5 @@ letter adjustment features.
 troffdoc.pdf - The _Nroff/Troff User's Manual_ reformatted using the new
 paragraphing and letter adjustment features.
 
-The "source" directory contains the source files for the troffdemo.pdf and
-troffdoc.pdf.
+The "source" directory contains the source files for the troffdemo.pdf,
+troffdoc.pdf, and some sample source files for typotests-doc.pdf

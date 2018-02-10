@@ -1,0 +1,192 @@
+.@Chapterbreak
+.@Subhead RECIPES AND MISCELLANEOUS DATA
+.@Labeli recipes
+.@Pageheading center "recipes & miscellaneous data"
+.sp 2
+
+
+.@H4 PARAGRAPH CONTROLS
+
+.@Begin Itemize2
+The Heirloom penalty curves, @req[.wscalc\~0] and @req[1], have a strong
+interaction between the word space ratio and the hyphenation penalties.
+To obtain an Heirloom-like response without this interaction, set:
+.
+.@Begin Example2
+ .wscalc 3
+ .wrdspc 0 160
+.@End Example2
+.
+The Heirloom curve shape will readily shrink the space size a great deal to
+avoid a penalty item, so it is essential to control the minimum space size with
+@req[.minss].  With @req[.wscalc\~2] and up, hyphenation penalties will need to
+be considerably higher (two or three times as much) than with the Heirloom
+curves for reasonably similar results.  Due to Heirloom's interaction with
+word spaces, a direct conversion is not possible.
+
+
+To obtain settings similar to the \*[tex]82 defaults:
+.@Begin Example2
+.@Tabs (\n(.lu-\n[.in]u)R
+ .wscalc 10
+ .ss 12
+ .minss 8
+ .hy 4
+ .hlm\e"	no limit for consecutive hyphenated lines
+.@End Example2
+.
+@req[.wscalc\~10] sets several paragraph parameters to the \*[tex]82 defaults.
+All other paragraphing parameters are set to zero.
+.
+.@Begin Example2
+ .wrdspc 66.7 150
+ .hypp 50 100 0 50
+ .exhyp 25
+ .adjpenalty 100 50
+ .linepenalty 10
+.@End Example2
+.
+To convert penalties and demerits from \*[tex]'s units, in general:
+.
+.@Begin Itemize3
+Square penalties then divide by 100
+
+Divide demerits by 100
+.@End Itemize3
+.
+With @req[.wscalc\~10] and @req[.wscalc\~11], some conversions need special
+attention because of the way an item is used:
+.
+.@Begin Table
+.@Labeli textable
+.sp 4p
+.TS
+expand ;
+C 1 C 1 C
+L L L.
+\&.wscalc 10	\*[TeX] Conversion	Type
+_
+@t[.exhyp\ ]@i[p]	@t[\eexplicithyphenpenalty]@+[2] / 100	Normal
+@t[.hypp @i[p]@-[1] x x x]	@t[\ehyphenpenalty]	Special
+@t[.hypp x @i[p]@-[2] x x]	@t[\edoublehyphendemerits] / 100	Normal
+@t[.hypp x x x @i[p]@-[4]]	@t[\efinalhyphendemerits] / 100	Normal
+@t[.adjpenalty] @i[p]	@t[\eadjdemerits] / 100	Normal
+@t[.linepenalty] @i[p]	@t[\elinepenalty]	Special
+.TE
+.sp 0.4v
+.@End Table
+.
+The current-line hyphenation penalty, @i[hypp]@-[1], and the line penalty
+are squared before they are applied.
+The last word hyphenation penalty, @i[hypp]@-[3], is not supported by \*[tex].
+
+
+@req[.wscalc\~11],
+the preset based on the Knuth-Plass paper, is similar to @req[.wscalc\~10],
+but the current line's hyphenation penalty interacts with both the space size
+and the line penalty.  The defaults are the same as @req[.wscalc\~10] except:
+.
+.@Begin Example2
+ .hypp 50 30 0 50
+ .linepenalty 1
+.@End Example2
+
+
+@req[.wscalc 12],
+the adapted \*[TEX]82 preset, has the default behavior of @req[.wscalc\~10],
+but applies penalties in the same way as curves 2--9:
+@i[linepenalty] does not interact with the word space penalty and @i[hypp]@-[1]
+is not squared before it is applied.  The defaults are the same as
+@req[.wscalc\~10] except:
+.
+.@Begin Example2
+ .hypp 25 100 0 50
+ .linepenalty 1
+.@End Example2
+.@End Itemize2
+
+
+.@H4 LETTER ADJUSTMENT
+
+.@Begin Itemize2
+To adapt a legacy Heirloom configuration to use the new controls:
+.
+.@Begin Itemize3
+Set @var[letthreshlwr] slightly larger than the ratio of $minss~/~ss$.
+If $minss~=~9$ and $ss~=~12$, set @var[letthreshlwr] to about 76% or 77%.
+
+Set @var[letthreshupr] to $letss~/~ss$.  For $letss~=~16$ and $ss~=~12$,
+that is 133%.  (@var[letss], the letter adjustment space size
+threshold, is the third argument to @req[.letadj].)
+
+Use @req[.letcalc 4], to distribute letter adjustment among glyphs and spaces
+(similar to Heirloom's method), or @req[.letcalc\~2].
+
+Heirloom does not take the effects of letter adjustment into account when it
+determines line breaks, other than to know whether the text will fit on the
+line.  To match this behavior use @req[.letpen\~0].  To account for the effects
+of letter adjustment use @req[.letpen\~1] or @req[.letpen\~2].
+
+@req[.wscalc 1] replicates the Heirloom word space penalty curve and supports
+all of the new controls, or use @req[.wscalc\~3] as described previously.  Set
+the wordspace range as desired.
+.@End Itemize3
+.
+The corresponding requests are:
+.@Begin Example2 
+ .letthresh 77 133
+ .letcalc 4
+ .letpen 0
+ .wscalc 1
+ .wrdspc 0 160
+ .minss 9
+.@End Example2
+.
+An alternate adaptation that would provide better control of word spaces and
+take letter adjustment into account:
+.@Begin Example2
+ .wrdspc 75 134
+ .wscalc 3
+ .letcalc 1
+ .letpen 1
+ .minss 9
+.@End Example2
+
+
+.ne 8
+To set letter adjustment to values similar to those described in \*[hanthanh]'s
+\*[pdfTeX] dissertation:
+.@Begin Example2
+ .letcalc 2
+ .letadj 100 98 12 100 102
+ .letpen 1
+ .letthresh 100 100
+ .letstren 100
+.@End Example2
+.
+To take hanging punctuation and right margin kerning into account
+when breaking lines (similar to \*[pdftex]'s @t[\epdfprotrudechars\~2]),
+execute the request
+.
+.@Example2 "\& .rhanglevel 2"
+.
+Margin adjustment and hanging punctuation are handled in the Heirloom manner,
+and differ from \*[pdftex] in the following ways:
+.
+.@Begin Enumerate
+Adjustments defined with @req[.lhang] are always taken into account during
+line breaking and are always applied when the lines are output.
+With \*[pdftex], both left and right character protrusion can be switched off
+with @t[\epdfprotrudechars\~0] even though adjustments have been defined.
+
+Adjustments defined with @req[.rhang] are always applied when the lines are
+output, but are not taken into account when breaking lines unless
+@req[.rhanglevel] is 1 or 2.
+
+Margin kerning and hanging punctuation are both defined with the
+@req[.lhang] and @req[.rhang] requests instead of separately as in \*[pdftex]
+(@t[\eleftmarginkern] and @t[\erightmarginkern], and @t[\elpcode] and
+@t[\erpcode]).
+.@End Enumerate
+.@End Itemize2
+
