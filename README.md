@@ -1,4 +1,3 @@
-# reffort.github.io
 This repository contains documentation files for using the typographical
 modifications to n-t-roff.  These modifications improve the quality of
 paragraph-at-once justification and letter adjustment, and allow a great deal
@@ -14,4 +13,4 @@ troffdoc.pdf - The _Nroff/Troff User's Manual_ reformatted using the new
 paragraphing and letter adjustment features.
 
 The "source" directory contains the source files for the troffdemo.pdf,
-troffdoc.pdf, and some sample source files for typotests-doc.pdf
+troffdoc.pdf, and typotests-doc.pdf

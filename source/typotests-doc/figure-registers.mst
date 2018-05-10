@@ -1,0 +1,61 @@
+.Begin Fullpagefigure
+.Figureheading "READ-ONLY NUMBER REGISTERS"
+\!.Labeli table:readonlyregisters
+.PL +3
+
+.rs
+.ps 11
+.vs 14p
+.ce
+f = floating point, i = integer, s = string, % = percent, u = units
+.sp 0.75v
+.ta
+.TS
+center ;
+C 1 s 1 s 1 s
+L 1 C 1 C 1 L.
+Paragraphing
+.sp 0.25v
+ .adjpenalty	f		adjacent line incompatibility penalty
+ .adjthreshold	f	%	adjacent line incompatibility threshold
+ .adjthreshupr	f	%	adjacent line incompatibility upper threshold
+ .elpchar	s		end of line punctuation penalty characters
+ .elppen\&	f		end of line punctuation penalty
+ .exhyp\&	f		explicit hyphenation penalty
+ .hypp4\&	f		penultimate line hyphenation penalty
+ .linepenalty	f		penalty for each line
+ .looseness	i		looseness lines
+ .overrunmin	i	u	last line minimum length
+ .overrunpenalty	f		progressive overrun penalty
+ .overrunthreshold	f	%	threshold for progressive overrun penalty
+ .rhanglevel	i		right margin adjustment line breaking level
+ .wscalc\&	i		word space calculation method
+ .wslwr\&	f	%	lower ``good'' word space boundary
+ .wsmark\&	i		word space mark level
+ .wsmin\&	f	%	minimum word space
+ .wsupr\&	f	%	upper ``good'' word space boundary
+ .wswarn\&	i		word space warn level
+ .wswarnlwr	f	%	word space warn lower threshold
+ .wswarnupr	f	%	word space warn upper threshold
+.sp 0.75v
+.T&
+C s s s.
+Letter Adjustment
+.sp 0.25v
+.T&
+L C C L.
+ .adjlapenalty	f		adjacent line letter adjust penalty
+ .adjlathreshold	f		adjacent line threshold multiplier
+ .letcalc	i		letter adjustment method
+ .letpen\&	i		letter adjustment penalty
+ .letpenlwr\&	f	%	letter adjustment penalty lower reference
+ .letpenupr\&	f	%	letter adjustment penalty upper reference
+ .letstren	f	%	letter adjustment strength multiplier
+ .letthreshlwr	f	%	exclusion zone lower threshold
+ .letthreshupr	f	%	exclusion zone upper threshold
+.TE
+.ta
+.Begin Figurecaption above 0.5v
+Read-only number registers
+.End Figurecaption
+.End Fullpagefigure

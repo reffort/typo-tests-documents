@@ -1,0 +1,395 @@
+.H1a PARAGRAPH CONTROL REQUESTS
+.Labeli paragraphcontrol
+.Pageheading center "paragraph control requests"
+
+
+.TERM2 ".adjpenalty" "pen thresh (threshupr)" "0 50 0"
+.
+Adjacent line incompatibility penalty.  Discourages consecutive lines when one
+has loose word spaces and the other has tight spaces.
+The space size of each line is placed into a fitness class determined by the
+size of the word spaces and the value of @i[thresh], and the penalty @i[pen]
+is applied if the fitness classes differ by more than one.
+
+If @i[threshupr] is not specified, the value of @i[thresh] defines the class
+size in percent of the distance from the desired space size to the lower or
+upper bound for ``good'' sizes as defined by the @req[.wrdspc] request.
+For example, @req[.adjpenalty\~100\~50] establishes fitness classes that are
+50% of the distance from the desired space size to the ``good'' boundaries
+and applies a penalty of 100 if two consecutive lines are more than one class
+apart.  With the default @req[.wrdspc\~66.7\~150], the ``tight'' class would be
+83.3% and below, the ``loose'' class 125% and higher, and the ``decent'' class
+in between.
+
+If @i[threshupr] is also specified, the meaning of the numbers changes.
+@i[thresh] becomes the threshold for shrunk spaces and @i[threshupr] becomes
+the threshold for stretched spaces, expressed in percent of the desired space
+size.  This allows fixed shrink and stretch classes that are independent
+of @req[.wrdspc].  Setting @req[.adjpenalty\~100\~83.3\~125] defines classes at
+the same points as above, but they do not scale with @req[.wrdspc].
+
+
+.TERM2 .elpchar "characters" "\f[F].,;:?!'"")]}\fP"
+.
+Defines a custom list of line ending punctuation characters for use by
+@req[.elppen].  If no characters are specified, the list is cleared.
+The default list can be restored by specifying a motion character,
+``@req[.elpchar\~\er]''; motion characters are otherwise ignored if the list
+contains printing characters.
+Characters can be appended to the current list by referencing the read-only
+register @b[\en[.elpchar]] followed by the new characters:
+.
+.@Example \&.elpchar \en[.elpchar]\e(rq\e[guillemotright]
+.
+.\" add them
+.elpchar \n[.elpchar]\(rq\[guillemotright]
+.
+adds the right quote and right guillemot:
+.@f \&\n[.elpchar]
+\&\~.
+
+.\" Restore the defaults
+.elpchar \r
+
+
+.TERM2 .elppen pen 0
+.
+Line ending punctuation penalty.  Applies penalty @i[pen] to lines that end
+with a punctuation character, excluding hyphens.  @w[@i[pen] > 0] discourages
+punctuation at the end of the line (for better appearance), and @w[@i[pen] < 0]
+encourages it (for better readability).  For values of @w[@i[pen] < 0],
+best results are usually achieved with small values, \-3 to \-5.  The default
+characters are
+.@f \&\n[.elpchar]
+\&\~.  A custom list can be defined with @req[.elpchar].
+
+.\" An inline character style such as @f[] cannot be used with \n[.elpchar]
+.\" because one of the elpchars is the right bracket "]", which terminates the
+.\" expression.  The alternate syntax ".@f" eliminates this restriction.
+.\" Alternately, the font can be hardcoded troff-style: \f[F]\n[.elpchar]\fP
+.\" if there are no other character styling or font mapping considerations.
+.\" The syntax ".f" can be used when a word space is desired after the term.
+
+
+.TERM2 .exhyp pen 0
+.
+Explicit hyphen penalty.  Discourages line breaks at explicit hyphens,
+such as occur in hyphenated compound words.
+If @w[@var[pen] \(!= 0] and the line ends with an explicit hyphen,
+@var[pen] replaces @i[hypp]@-[1] in the @req[.hypp] request and the line
+is included in the count of consecutive hyphenated lines.
+
+
+.TERM2 .hypp "hypp@-[1] hypp@-[2] hypp@-[3] hypp@-[4]" "0 0 0 0"
+.
+The penalties are now more predictable when used with the new @req[.wscalc]
+methods, but the values must be increased to have a similar effect.
+A new fourth argument, @i[hypp]@-[4], discourages hyphenating the penultimate
+line of a paragraph.  If the last word of the paragraph is hyphenated and
+@i[hypp]@-[3] is nonzero, @i[hypp]@-[3] is applied instead of @i[hypp]@-[4].
+
+
+.TERM2 .lastlinestretch "\f[R]0 | 1\fP" 0
+.
+Stretches the last line of a paragraph to full measure if the line's natural
+length falls within one en of the line length.  A\~1 or no argument turns the
+feature on, 0\~turns it off.
+
+
+.TERM2 .linepenalty pen 0
+.
+Favors paragraphs that have fewer lines.  The penalty @i[pen] is applied to
+each line.  A typical value is 1.0; useful values range from 0.25 to\~10 or
+more.  @req[.linepenalty] is functionally a type of overrun control.
+
+
+.TERM2 .looseness n 0
+.looseness +1
+.MNa "This paragraph is one line longer than its natural length."
+Alters the length of the paragraph by @i[n] lines.  @i[n]\|>\|0 increases the
+length, @i[n]\|<\|0 decreases it.  Turns itself off at the end of the paragraph.
+Sometimes it might be necessary to change the constraints, such as @i[minss],
+letter adjustment, or tracking, to obtain the desired paragraph length.
+
+
+.TERM2 .overrunpenalty "pen \@{thresh@-[1]\@} (\@{thresh@-[2]\@})" "0 25 0"
+.
+Discourages overrun lines (short last lines).
+@i[thresh]@-[1] defines the length of the overrun line at which the
+penalty is first applied, expressed in percent of full measure; shorter lines
+are progressively penalized.
+The minimum penalty is @i[pen] at @i[thresh]@-[1];
+at @i[thresh]@-[1]\|/\|2 the penalty is @w[2 \(mu @i[pen]],
+at @i[thresh]@-[1]\|/\|4 the penalty is @w[4 \(mu @i[pen]], and so on.
+The last line may be lengthened, moved to the previous line, or left @w[as-is],
+whichever gives the lowest total penalty.
+The optional argument @i[thresh]@-[2] defines a minimum length
+in units of distance (default:\~ems).
+If @i[thresh]@-[1] and @i[thresh]@-[2] are not specified, the current values
+are retained.  Some care must be taken when choosing the progressive
+penalty: if it is set too high, the entire paragraph can be visibly degraded.
+
+@req[.overrunpenalty 10 25] progressively penalizes last lines shorter than 25%
+of full measure.  At 25% the penalty is 10, at 12.5% it is 20,\p
+etc.
+
+@req[.overrunpenalty 1 0 32p] prevents lines shorter than 32 points,
+but does not assess a progressive penalty.
+This is useful for ensuring that the last line is longer than the paragraph
+indent.  For example, the paragraphs in this section have a first line indent
+of 16\~points, so by setting @i[thresh]@-[2] at 32p, last lines shorter than
+twice the paragraph indent, such as the ``etc.'' in the previous paragraph,
+can be prevented should the progressive penalty allow them.  The value of
+@i[pen] is not important in this case, but it must be greater than zero.
+
+@req[.overrunpenalty 10 25 2v] applies a progressive penalty to lines that are
+shorter than 25% of full measure and prevents lines that are shorter than
+two times the baseline spacing.
+
+
+.TERM2 ".rhanglevel" "level" "0"
+.
+Defines how hanging punctuation and right margin kerning specified with
+@req[.rhang] will be taken into account when determining line breaks.
+
+If\ @var[level]\ =\ 0, they are not taken into account for line breaking,
+but are applied when output (the Heirloom behavior).
+On lines with tight spaces, the resulting space size can sometimes become
+smaller than @var[minss], or the line may even break incorrectly, after
+@req[rhang] is applied.
+
+If\ @var[level]\ =\ 1, they are taken into account for fitting characters on
+the line and satisfying @var[minss], but not for the effect on space size.
+This is the minimum recommended setting if negative @req[rhang] is used.
+
+If\ @var[level]\ =\ 2, the effect on space size is also taken into account
+for the overall paragraph for values of @req[.wscalc] 1 and above.  In Heirloom
+mode (@req[.wscalc 0]), level\~2 is the same as level\~1.
+
+
+.TERM2 ".wrdspc" "wslwr wsupr" "0 160"
+.
+Defines the preferred range of word spaces in percent of the desired space size.
+@i[wslwr] defines the lower end of the range, @i[wsupr] the upper.
+Values closer to 100 tend to reduce space size variation and increase
+hyphenation, values farther from 100 tend to do the opposite.
+Acceptable values are
+$0~<=~wslwr~<=~99$ and $101~<=~wsupr~<=~500$.
+.\" These two lines have a little better spacing than eqn's
+.\" 0\~\(<=\~@i[wslwr]\~\(<=\~99 and
+.\" 101\~\(<=\~@i[wsupr]\~\(<=\~500.
+The function of @i[wslwr] and @i[wsupr] is not to limit the size of the word
+spaces, but to define the space size adjustment ratios at which the word space
+penalty is 100, the dividing line between ``good'' and ``bad.''
+
+In ragged (non justified) mode when paragraph adjustment is in effect,
+@i[wslwr] specifies the preferred minimum line length in percent of full
+measure; @i[wsupr] is irrelevant except that it must be at least 101.
+Thus, @req[.wrdspc\~85\~102] defines ``good'' lines to be at least 85% full;
+larger values favor lines that are more full, and smaller values allow more
+variation but may result in better line breaks.
+
+
+.TERM2 .wscalc n 0
+.
+Word space calculation method.  Defines the
+characteristics of the curve used to grade word spaces.
+Values of @i[n] are listed in Table\~1.
+
+.Begin Table above 0v float yes
+.ta
+.Begin Tablecaption above 0.5v below 0.5v
+Word space calculation methods
+.End Tablecaption
+\!.@Labeli table:wsmethods
+.
+.TS
+expand ;
+C 2 L 2 Lw(3.3i).
+@i[n]	Type@+[a]	Description
+_
+0	Preset	T{
+Heirloom preset (default), runs the Heirloom code, has limited support for new features.
+T}
+1	Curve	T{
+Same penalty calculation as @req[.wscalc 0], but has full support for new features.
+T}
+2--9	Curve	T{
+Continuous curves of order @i[n].
+T}
+10	Preset	T{
+\*[TeX]82-like configuration.\"preset; also sets other parameters.
+T}
+11	Preset	T{
+As described in the Knuth-Plass paper.
+T}
+12	Preset	T{
+Adapted \*[TeX]82 curve.  The default characteristics are the same as method 10,
+but penalties are applied like methods 2--9.
+T}
+20--99	Curve	T{
+Two-phase curves.  The tens digit defines the ``good'' portion of the curve,
+the ones digit defines the ``bad'' portion.  Values are constrained to the
+range 2--9.
+T}
+_
+.TE
+.Begin Tablenotes
+@+[a] A @i[curve] specifies only the word space penalty curve;
+a @i[preset] specifies the curve and various other controls.
+.End
+.End Table
+
+The word space penalty curve defined by @req[.wscalc] and @req[.wrdspc]
+is the anchor for all other penalties.  A penalty of zero is
+``perfect,'' 100 is the dividing line between ``good'' and ``bad,''
+.\"MNa "See Fig.\~2 on p.\~@pageref[SchematicFigure] and Fig.\~4 on p.\~@pageref[figure:standardpenaltycurves]"
+and greater than\~100 denotes ``bad.''
+@req[.wrdspc] defines the word space range at the ``good''/``bad'' line
+and @req[.wscalc] specifies the curve's shape.
+In practice, the perceived difference between ``good'' and ``bad'' is rather fuzzy,
+but the dividing line is where the penalty curves begin to steepen more
+rapidly.
+
+Method 0 is the Heirloom Mode (default) preset.
+It runs the existing Heirloom code.
+.MNa "Curves 0--9 are graphed in Fig.\~4,\p p.\~@pageref[figure:standardpenaltycurves]"
+It does not support
+@req[.wrdspc],
+@req[.wsmin],
+@req[.adjpenalty],
+or the new letter adjustment features,
+but does support
+@req[.elppen],
+@req[.exhyp],
+@req[.lastlinestretch],
+@req[.linepenalty],
+@req[.looseness],
+@req[.overrunpenalty],
+@req[.wsmark],
+and
+@req[.wswarn], and has limited support for @req[.rhanglevel].
+It sets all of the paragraph controls to zero,
+and switches to the Heirloom letter adjustment method, @req[.letcalc\~0].
+The word space range is fixed at the equivalent of 0% to\~160%.
+
+Method 1 performs the Heirloom penalty calculation and supports all of the new
+features.  No other settings are changed.  The word space range is adjustable
+but is not preset; to match the Heirloom range use @req[.wrdspc\~0\~160].
+
+Methods 2 through 9 apply a user specified curve of order @i[n].
+The word space penalty @i[t] is calculated as @i[t]\~=\~$100 |r| sup n$,
+where @i[r] is the normalized adjustment ratio (see Table 3 on
+page\~@pageref[table:binclasses]).
+
+Methods 10 and 11 apply a modified sixth-order curve based on the \*[TeX]
+calculations.
+.MNa "Fig.\~5,\p p.\~@pageref[figure:texcurves]"
+Method 10 is based on \*[TeX]82\~[5] and method\~11 on the
+Knuth-Plass paper [1].  These methods set @req[.wrdspc], @req[.adjpenalty],
+@req[.hypp], @req[.linepenalty], and @req[.exhyp] to the \*[TeX] defaults.  The
+values for the current line hyphenation penalty and the line penalty have the
+\*[TeX] scale, and are not directly comparable to penalties used in methods
+2 through\~9.  \*[tex]'s penalties and demerits must be converted as
+described on page\~@pageref[textable].  @req[.wscalc\~10] can give a good
+approximation to \*[tex]'s paragraphing, but it is not intended to provide
+an exact match.
+
+Method 12 is based on the \*[TeX]82 curve, but the line penalty and current line
+hyphenation penalty have been adapted to work the same as methods 2 through 9.
+Sets defaults for @req[.wrdspc], @req[.adjpenalty], @req[.hypp],
+@req[.linepenalty], and @req[.exhyp] to the \*[TeX]82 defaults.
+
+Methods 20 through 99 apply a two-stage curve.  The first digit (tens) defines
+the curve
+.MNa "Fig.\~6,\p p.\~@pageref[figure:twostagecurve]"
+for the ``good'' spaces, the second digit (ones) for the ``bad'' spaces.
+@req[wscalc\~36] applies a cubic curve $| r | sup 3$ to ``good'' space sizes
+and a sixth-order curve $| r | sup 6$ to ``bad'' ones, penalizing them at a
+much higher rate and making them even more undesirable.
+All curves are restricted to the range 2 through 9:
+@req[.wscalc\~20] becomes @req[.wscalc\~22] (equivalent to 2), and @req[.wscalc\~31]
+becomes @req[.wscalc\~32].
+
+.TERM2 .wsmark \f[R]0\~|\~1\fP 0
+.wsmark
+.wswarn 2 70 137.5
+Places a number or character in the right margin to indicate the line's space
+size ratio; larger numbers indicate larger space sizes.  A\~1 or no argument
+switches it on, 0\~switches it off.  The margin character is the Bin Class
+as defined in Table\~3 on page\~@pageref[table:binclasses] and shown in
+Figure\~4 on page\~@pageref[figure:standardpenaltycurves].  This feature is
+useful when fixing problem paragraphs.
+
+.minss 6
+Bin 5 is the central bin containing the nominal space size.
+Using the terminology for the standard \*[TeX] fitness classes,
+bins 4 through\~6 (83.3--125%) are ``decent,''
+bins 2 and\~3 (66.7--83.3%) are ``tight,''
+bins 7 and\~8 (125--150%) are ``loose,''
+and spaces larger than bin 8 (150%) are
+.brp
+.@Label wsmarkexample
+.letadj\"
+``very loose.''  \ Spaces smaller than bin 2 (66.7%) are possibly too tight for\p
+running text, and those larger than bin 8 (150%) might be too\p
+loose, although they are sometimes unavoidable.  The space size ratio should be
+kept below 200% (bin C) if possible.
+
+.\" a break is required to output the paragraph before turning these off
+.wsmark 0
+.wswarn 0
+
+
+.TERM2 .wsmin lwr 0
+.
+Defines a soft minimum space size in percent of the desired space size.
+The value of @var[lwr] must be larger than the hard limit set by @req[.minss]
+for there to be any effect.  With @req[.ss\~12] and @req[.minss\~8],
+@req[.wsmin\~71] very strongly discourages space sizes smaller than 71% of the
+desired space size, but if the algorithm finds that it desperately wants smaller
+spaces for a difficult paragraph, it will use them down to the hard limit of
+66.7% imposed by @req[.minss].  With @req[.ss\~12] and @req[.minss\~9],
+@req[.wsmin\~71] will have no effect because @req[.minss] limits the minimum
+space size to 75%.
+
+
+.TERM2 .wswarn "level lwr upr" "0 66.7 150"
+.
+.wswarn 2 75 137.5
+Similar to @req[.wsmark], but only flags lines that may need attention.
+If a line has spaces smaller than @i[lwr] percent or larger than
+@i[upr] percent of the desired size, the line is flagged.
+If @i[lwr] and @i[upr] are not supplied, the previous values are assumed.
+
+The corresponding lines are flagged by printing their bin class next to them
+in the margin, and optionally writing a message to @cmd[stderr].
+@req[.wswarn] is useful for finding bad word spacing in a document
+without having to examine it page by page.
+
+If @i[level] = 0, the feature is turned off.
+
+If @i[level] \(>= 1, the word space bin is written in the margin.
+
+If @i[level] = 2, a message is also written to @cmd[stderr].
+
+With no arguments @req[.wswarn] is equivalent to @req[.wswarn\~1].
+The request @req[.wswarn\~1\~100\~100] is equivalent to @req[.wsmark\~1].
+
+@req[.wswarn 2 75 137.5] flags only lines with spaces smaller than 75% or
+larger than 137.5% of nominal (Bins 2 and\~8, the farther half of the
+``tight'' and ``loose'' classes) and writes a message to @cmd[stderr]:
+.
+.Begin Example2
+wswarn: wordspace bin 0 ratio 0.558969 on page @pageref[wsmarkexample]
+wswarn: wordspace bin X ratio 2.266949 on page @pageref[wsmarkexample]
+wswarn: wordspace bin B ratio 1.806850 on page @pageref[wswarnexample]
+.End
+
+.wsmin 70
+If both @req[.wswarn] and @req[.wsmark] are in effect at the same time,
+.@Label wswarnexample
+@req[.wsmark] takes precedence for marking the lines in the margin,
+and the messages sent to @cmd[stderr] originate from @req[.wswarn].
+
+.wswarn 0

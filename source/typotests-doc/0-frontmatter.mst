@@ -1,0 +1,78 @@
+.af % i
+.Begin Frontmatter
+.Begin Titlepage
+.Begin Titlebox
+ENHANCED PARAGRAPHING
+AND MICROTYPOGRAPHY FEATURES
+FOR N-T-ROFF
+.sp 3
+Roy Fisher
+2017/12/29
+.End Titlebox
+.End Titlepage
+
+
+.Begin Copyrightnotice
+Copyright \[copyright] 2017 by Roy Fisher.
+This PDF may be freely distributed for personal use.
+\*[tex] is a trademark of the American Mathematical Society.
+Revised @value[date].
+.End
+
+
+.TC1 CONTENTS
+
+.sp -1
+.TS
+center ;
+N 1 L 1 R 1 Rw(1n).
+1.	INTRODUCTION		@pageref[introduction]
+.sp 0.5v
+2.	PARAGRAPH CONTROL REQUESTS		@pageref[paragraphcontrol]
+	.adjpenalty	@pageref[.adjpenalty]
+	.elpchar	@pageref[.elpchar]
+	.elppen 	@pageref[.elppen]
+	.exhyp  	@pageref[.exhyp]
+	.hypp   	@pageref[.hypp]
+	.lastlinestretch	@pageref[.lastlinestretch]
+	.linepenalty	@pageref[.linepenalty]
+	.looseness	@pageref[.looseness]
+	.overrunpenalty	@pageref[.overrunpenalty]
+	.rhanglevel	@pageref[.rhanglevel]
+	.wrdspc 	@pageref[.wrdspc]
+	.wscalc 	@pageref[.wscalc]
+	.wsmark 	@pageref[.wsmark]
+	.wsmin  	@pageref[.wsmin]
+	.wswarn 	@pageref[.wswarn]
+.sp 0.5v
+3.	LETTER ADJUSTMENT REQUESTS		@pageref[lettercontrol]
+	.adjletpen	@pageref[.adjletpen]
+	.letcalc	@pageref[.letcalc]
+	.letpen 	@pageref[.letpen]
+	.letshp 	@pageref[.letshp]
+	.letspc 	@pageref[.letspc]
+	.letstren	@pageref[.letstren]
+	.letthresh	@pageref[.letthresh]
+.sp 0.5v
+4.	RECIPES & MISCELLANEOUS DATA		@pageref[recipes]
+.TE
+
+
+.@TC1 ILLUSTRATIONS
+
+.TS
+center ;
+N 0 L 2 Rw(1n).
+	Figure 1: Sample paragraph settings     	@pageref[MacroPage]
+	Figure 2: Diagram of settings of Figure 1	@pageref[SchematicFigure]
+	Figure 3: Read-only Number Registers    	@pageref[table:readonlyregisters]
+	Figure 4: Word space penalty curves     	@pageref[figure:standardpenaltycurves]
+	Figure 5: Word space penalty curve, .wscalc 10	@pageref[figure:texcurves]
+	Figure 6: Two-stage penalty curve       	@pageref[figure:twostagecurve]
+
+	Table 1: Word space calculation methods 	@pageref[table:wsmethods]
+	Table 2: Letter adjustment methods      	@pageref[table:letadjmethods]
+	Table 3: Bin Classes and Adjustment Ratios	@pageref[table:binclasses]
+
+.TE
+.@End Frontmatter

@@ -1,0 +1,43 @@
+This directory contains the source files that were used to build
+typotests-doc.pdf.  The files are marked up for use with an experimental macro
+set that is currently an incomplete work in progress.  The document cannot
+be built directly from these files without the macros.
+
+The macros are based on the Scribe document language developed by Brian Reid in
+the late 1970s, as documented in the "Scribe Introductory User's Manual"[1] and
+in Reid's PhD thesis, "Scribe: A Document Specification Language and its
+Compiler"[2].
+
+
+The files
+---------
+typodoc.mst : The master file.  Loads all the individual document files in order.
+
+typodoc-style : The style sheet.
+
+typodoc-custom : Some customizations, fancy string formats, etc.
+
+font-libertinus : Mounts the font files and maps the standard character styles
+to the corresponding mounted font.
+
+0-frontmatter.mst through 5-references.mst : The source for the document
+sections.  The remaining files contain the figures.
+
+
+References
+----------
+[1] "Scribe Introductory User's Manual", Brian K. Reid.
+
+Two versions of this are readily available.  The first, a completed version:
+3 August, 1978: http://www.dtic.mil/dtic/tr/fulltext/u2/a064808.pdf (40 MB)
+
+The second, a preliminary version:
+July, 1978: http://bitsavers.informatik.uni-stuttgart.de/pdf/cmu/scribe/Scribe_Introductory_Users_Manual_Jul78.pdf (7 MB)
+
+
+[2] "Scribe: A Document Specification Language and its Compiler", Brian K. Reid,
+October, 1980.  www.dtic.mil/dtic/tr/fulltext/u2/a125287.pdf (8 MB)
+
+There is also a Wikipedia article on Scribe,
+< http://en.wikipedia.org/wiki/Scribe_(markup_language) >.
+

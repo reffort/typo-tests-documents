@@ -1,0 +1,48 @@
+.\"
+.\" Customizations
+.\"
+.
+.\"	special character \[ecircumflexacute] for libertinus serif
+.
+.char \[e^'] \[ecircumflex]\v'-0.17m'\[acutecomb]\v'0.17m'
+.
+.
+.\"	Terms that need some fancy formatting
+.\"	These are set up using troff's .ds strings, but they could also
+.\"	be set up using the @String command and referenced with @Value.
+.
+.ds hanthanh H\[`a]n Th\[e^'] Th\[`a]nh
+.ds nroff \@{Nroff\@}
+.ds troff \@{Troff\@}
+.ds ntroff \@{n\(hyt\(hyroff\@}
+.ds TEX \@{T\h'-.08m'\v'0.2m'E\v'-0.2m'\h'-0.05m'X\@}
+.ds pdfTEX \@{\f(ACpdf\fP\\*[TEX]\@}
+.
+.als TeX TEX
+.als tex TEX
+.als pdfTeX pdfTEX
+.als pdftex pdfTEX
+.
+.
+.\"
+.\" Custom heading for definitions
+.\"
+.
+.de TERM2
+.	ne 4
+\@{
+.	sp
+.	rs
+.	br
+.	sp 0.5v
+.	in 0
+.	ti +0
+.	ps 12
+.	lt \\n(.lu
+.	ie !\\$3 .tl \f[B]\\$1\f[I]\h'1n'\\$2\f[I]Default:\f[R] \\$3
+.	el .tl \f[B]\\$1\f[I]\h'1n'\\$2
+.	@Labeli \\$1
+.	sp 0.5v
+\@}
+.	ti +0
+..

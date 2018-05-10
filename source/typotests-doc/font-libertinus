@@ -1,0 +1,139 @@
+.ig
+	Libertinus is a fork of Linux Libertine with some updates and fixes.
+	The files were sourced from github.com/khaledhosny/libertinus
+	v6.5, 28 Nov 2017
+..
+.
+.ds FontFileR  libertinusserif-regular otf
+.ds FontFileI  libertinusserif-italic otf
+.ds FontFileB  libertinusserif-semibold otf
+.ds FontFileBI libertinusserif-semibolditalic otf
+.ds FontFileSC \*[FontFileR]
+.ds FontFileCW cmtt10 pfb\" Computer Modern Typewriter
+.
+.de setkerns-r
+.	if '\\$1'' .return
+.	kernpair \\$1 ` \\$1 ` -90
+.	kernpair \\$1 ' \\$1 ' -90
+.	kernpair \\$1 o \\$1 o  0
+.	kernbefore \\$1 ;:!? 50 \(em 64
+.	kernafter \\$1 \(em 64
+.	lhang \\$1 ` -40 j 60 s -30 1 -50 \(+- -20
+.	rhang \\$1 ,; 30  .: 35  % 20  ' 50  ) 25  -\(hy 15  \(em 47 \
+          0 40  67 15 \
+          e 10  f\(ff -110  os 20  w -20
+..
+.fps math 1 R \*[FontFileR]
+.	setkerns-r R
+.
+.fp 2 I \*[FontFileI]
+.	kernbefore I ;:!? 50 \(em 64
+.	kernafter I \(em 64
+.	kernpair R \  I Rclmnprstuwx -50\" left italic correction
+.	kernpair I ehrstxy R \  50\" right italic correction
+.	hidechar I ()<>
+.	fallback I R
+.	rhang I X -120 t -30
+.
+.fp 3 B \*[FontFileB]
+.	kernbefore B ;:!? 50 \(em 64
+.	kernafter B \(em 64
+.
+.fp 4 BI \*[FontFileBI]
+.	rhang BI x -80
+.			\" smallcaps
+.fp 0 C \*[FontFileSC]
+.	flig C 0
+.	feature C +smcp
+.	trackfu C 50
+.			\" superscripts
+.fp 0 SUP \*[FontFileR]
+.	feature SUP  +sups
+.			\" subscripts
+.fp 0 SUB \*[FontFileR]
+.	feature SUB +sinf
+.			\" code
+.fp 0 F  \*[FontFileCW]
+.			\" typewriter
+.fp 0 T  \*[FontFileCW]
+.			\" heading
+.fp 0 H1Font \*[FontFileR]
+.	flig H1Font 0
+.	setkerns-r H1Font
+.	trackfu H1Font 20
+.			\" subhead
+.fp 0 SHFont \*[FontFileR]
+.	flig SHFont 0
+.	setkerns-r SHFont
+.	trackfu SHFont 20
+.	fzoom SHFont 0.95
+.			\" page heads
+.fp 0 PHFont \*[FontFileR]
+.	flig PHFont 0
+.	feature PHFont +smcp
+.	setkerns-r PHFont
+.	trackfu PHFont 50
+.			\" page numbers
+.fp 0 PNFont \*[FontFileR]
+.	flig PNFont 0
+.	setkerns-r PNFont
+.	trackfu PNFont 50
+.			\" acronyms
+.fp 0 A \*[FontFileR]
+.	flig A 0
+.	fzoom A 0.95
+.	trackfu A 10
+.			\" small caps for pdftex
+.fp 0 AC \*[FontFileR]
+.	flig AC 0
+.	feature AC +smcp
+.	fzoom AC 1.05
+.	trackfu AC 10
+.			\" title page caps and small caps
+.fp 0 LST \*[FontFileR]
+.	feature LST +case +smcp +onum
+.	flig LST 0
+.	trackfu LST 50
+.
+.setspacewidth 236 R I B BI A C T SUP SUB SHFont PHFont PNFont
+.
+.\"
+.\" Define the standard font environments.
+.\"
+.\" Libertinus contains all numbers needed for OpenType superscript and
+.\" subscript features, but not enough letters.  These are mounted (above)
+.\" so the superscript and subscript character styles can be remapped later
+.\" in the document.
+.\"
+.\" Character styles:
+.\" A	Acronym caps
+.\" C	Small caps
+.\" F	Fixed-width code font
+.\" T	Typewriter font
+.\" W	keep together
+.\" +	Superscript
+.\" -	Subscript
+.\"
+.
+.Define R font R
+.Define I font I
+.Define B font B
+.Define P font BI
+.Define BI font BI
+.Define A font A
+.Define C font C
+.Define F font F
+.Define T font T
+.Define W canbreak no
+.Define r font R
+.Define i font I
+.Define b font B
+.Define p font BI
+.Define bi font BI
+.Define a font A
+.Define c font C
+.Define f font F
+.Define t font T
+.Define w canbreak no
+.Define + script +0.40m zoom 0.65
+.Define - script -0.22m zoom 0.65
