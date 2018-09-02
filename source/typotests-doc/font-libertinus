@@ -1,13 +1,19 @@
 .ig
 	Libertinus is a fork of Linux Libertine with some updates and fixes.
 	The files were sourced from github.com/khaledhosny/libertinus
-	v6.5, 28 Nov 2017
+	v6.5, 28 Nov 2017.
+
+	The monospaced font is Computer Modern Typewriter, v3.02,
+	from ctan.org/pkg/amsfonts.  This font is a better match for
+	Libertinus than either Libertinus Mono or Courier.  A Type 1 font
+	is used because monospaced OpenType fonts exhibit strange behavior.
 ..
 .
 .ds FontFileR  libertinusserif-regular otf
 .ds FontFileI  libertinusserif-italic otf
 .ds FontFileB  libertinusserif-semibold otf
 .ds FontFileBI libertinusserif-semibolditalic otf
+.ds FontFileS  libertinusmath-regular otf
 .ds FontFileSC \*[FontFileR]
 .ds FontFileCW cmtt10 pfb\" Computer Modern Typewriter
 .
@@ -16,21 +22,23 @@
 .	kernpair \\$1 ` \\$1 ` -90
 .	kernpair \\$1 ' \\$1 ' -90
 .	kernpair \\$1 o \\$1 o  0
+.	kernpair \\$1 \(em \\$1 \(em -100
 .	kernbefore \\$1 ;:!? 50 \(em 64
 .	kernafter \\$1 \(em 64
-.	lhang \\$1 ` -40 j 60 s -30 1 -50 \(+- -20
+.	lhang \\$1 ` -40 1 -50 2 -30 68 -20 c -20 j 60 s -30 \(+- -20
 .	rhang \\$1 ,; 30  .: 35  % 20  ' 50  ) 25  -\(hy 15  \(em 47 \
-          0 40  67 15 \
-          e 10  f\(ff -110  os 20  w -20
+          0 40 1 80 67 15 \
+          e 10  f\(ff -110  os 20  w -10
 ..
-.fps math 1 R \*[FontFileR]
+.fp 1 R \*[FontFileR]
 .	setkerns-r R
 .
 .fp 2 I \*[FontFileI]
 .	kernbefore I ;:!? 50 \(em 64
 .	kernafter I \(em 64
 .	kernpair R \  I Rclmnprstuwx -50\" left italic correction
-.	kernpair I ehrstxy R \  50\" right italic correction
+.	kernpair I ehrstxy0123456789 R \ ;:?! 50\" right italic correction
+.	kernpair I r R ) 100
 .	hidechar I ()<>
 .	fallback I R
 .	rhang I X -120 t -30
@@ -38,24 +46,30 @@
 .fp 3 B \*[FontFileB]
 .	kernbefore B ;:!? 50 \(em 64
 .	kernafter B \(em 64
+.	rhang B 2 50 3 40 5 50
 .
 .fp 4 BI \*[FontFileBI]
 .	rhang BI x -80
+.
+.fps math 10 S \*[FontFileS]
+.
 .			\" smallcaps
 .fp 0 C \*[FontFileSC]
 .	flig C 0
 .	feature C +smcp
 .	trackfu C 50
+.
 .			\" superscripts
 .fp 0 SUP \*[FontFileR]
 .	feature SUP  +sups
 .			\" subscripts
 .fp 0 SUB \*[FontFileR]
 .	feature SUB +sinf
-.			\" code
+.			\" code (monospaced)
 .fp 0 F  \*[FontFileCW]
-.			\" typewriter
+.			\" typewriter (adj spaces)
 .fp 0 T  \*[FontFileCW]
+.	rhang T 0 35
 .			\" heading
 .fp 0 H1Font \*[FontFileR]
 .	flig H1Font 0
@@ -89,21 +103,23 @@
 .	feature AC +smcp
 .	fzoom AC 1.05
 .	trackfu AC 10
-.			\" title page caps and small caps
+.			\" upper case lining numbers (for TEX82)
+.fp 0 UC \*[FontFileR]
+.	flig UC 0
+.	feature UC +case
+.			\" title page caps
 .fp 0 LST \*[FontFileR]
-.	feature LST +case +smcp +onum
+.	feature LST +case
 .	flig LST 0
-.	trackfu LST 50
+.	trackfu LST +50
 .
-.setspacewidth 236 R I B BI A C T SUP SUB SHFont PHFont PNFont
+.setspacewidth 236 R I B BI S A C T SUP SUB SHFont PHFont PNFont UC
+.
+.rm FontFileR FontFileI FontFileB FontFileBI FontFileS FontFileSC FontFileCW
 .
 .\"
-.\" Define the standard font environments.
-.\"
-.\" Libertinus contains all numbers needed for OpenType superscript and
-.\" subscript features, but not enough letters.  These are mounted (above)
-.\" so the superscript and subscript character styles can be remapped later
-.\" in the document.
+.\" Define the standard font environments.  The document uses only direct
+.\" references.
 .\"
 .\" Character styles:
 .\" A	Acronym caps
@@ -124,7 +140,6 @@
 .Define C font C
 .Define F font F
 .Define T font T
-.Define W canbreak no
 .Define r font R
 .Define i font I
 .Define b font B
@@ -134,6 +149,30 @@
 .Define c font C
 .Define f font F
 .Define t font T
-.Define w canbreak no
-.Define + script +0.40m zoom 0.65
-.Define - script -0.22m zoom 0.65
+.Define + font SUP
+.Define - font SUB
+.\"Define + font R script +0.40m zoom 0.65
+.\"Define - font R script -0.22m zoom 0.65
+.
+.
+.\" libertinus has no glyph for \[ecircumflexacute]
+.
+.char \[e^'] \[ecircumflex]\v'-0.17m'\[acutecomb]\v'0.17m'
+.
+.
+.\" Libertinus's bullets are aligned to lc height, so they need to be
+.\" shifted up to align with caps.
+.
+.char \[bullet.cap] \v'-0.06m'\[bullet]\v'0.06m'
+.char \[triangle.cap] \v'-0.06m'\[uni2023]\v'0.06m'
+.char \[openbullet.cap] \v'-0.06m'\[openbullet]\v'0.06m'
+.
+.\" Map to the document names
+.
+.char \[bullet1] \[bullet.cap]
+.char \[bullet2] \[triangle.cap]
+.char \[bullet3] \[openbullet.cap]
+.
+.\" Ornamental rule for spacebreak
+.
+.char \[spbreakorna] \[uniE007]

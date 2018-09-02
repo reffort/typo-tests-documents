@@ -18,8 +18,8 @@ normalizedfc = 1	# 0 | 1
 thresh1 = 10/12	#0.8333	# lower decent class threshold if not normalized
 thresh2 = 1.25		# upper decent class threshold if not normalized
 
-hypp1 = 0.25
-linepenalty = 0.20
+hypp1 = 0.50
+linepenalty = 0.10
 
 #
 .ps 9
@@ -76,8 +76,8 @@ tstart = lmin + 0.01
 
 line from wslwr, 0 to wslwr, 2.0 dashed 0.025
 line from wsupr, 0 to wsupr, 2.0 dashed 0.025
-sprintf ("\fIwsupr\fP = %.1f%% ", wsupr * 100) size 8 rjust above at wsupr, 0
-sprintf (" \fIwslwr\fP = %.1f%%", wslwr * 100) size 8 ljust above at wslwr, 0
+sprintf ("\fIwsupr\fP = %.1f%% ", wsupr * 100) size 8 rjust above at wsupr, 0.025
+sprintf (" \fIwslwr\fP = %.1f%%", wslwr * 100) size 8 ljust above at wslwr, 0.025
 
 
 # line between good and bad
@@ -90,7 +90,7 @@ line dashed 0.025 from xmin, 1 to xmax, 1
 # hyphenation penalty
 
 line dashed 0.025 from xmin,hypp1 to xmax,hypp1
-"@i[hypp]@-[1]" size 8 at 0.61, hypp1 + 0.05
+"\f[I]hypp1\fP" size 8 at 0.61, hypp1 + 0.05
 
 # draw the curves
 
@@ -99,7 +99,7 @@ line dashed 0.025 from xmin,hypp1 to xmax,hypp1
 # draw cc dashed 0.02	# cubic
 draw tc dotted		# sixth order
 draw tc2 solid		# tex
-draw kp solid		# knuth-plass paper
+draw kp dashed # solid		# knuth-plass paper
 # draw tc3 dotted 0.3	# tex default adjusted
 # draw tca dashed 0.02	# adjusted limits
 draw tc4 solid		#
@@ -136,7 +136,7 @@ for j from 0.55 to 1.65 by 0.01 do {
 #	yval = (1+(100*i^3)^2)/10000
 #
 #	i^6
-	yval = i^6 + linepenalty + hypp1
+	yval = i^6 + hypp1 + sqrt(linepenalty*100)/100
 	if (yval < yclip) then { next tc at j, yval }
 
 #	wscalc 10, TeX82
@@ -144,17 +144,19 @@ for j from 0.55 to 1.65 by 0.01 do {
 	if (yval < yclip) then { next tc2 at j, yval }
 
 #	wscalc 11, KP curve
-	yval = (linepenalty + hypp1 + i^3)^2
+#	yval = (linepenalty + hypp1 + i^3)^2
+	yval = (0.01 + hypp1 + i^3)^2
 	if (yval < yclip) then {
 		next kp at j, yval
 		circle radius 0.01 at j, yval
 	}
 
 #	wscalc 12, modified TeX82
-	yval = (i^6 + linepenalty + hypp1)
+	yval = (0.10 + i^3)^2 + hypp1 # + sqrt(linepenalty*100)/100
 	if (yval < yclip) then {
 		next tc4 at j, yval
-		circle radius 0.0025 at j, yval
+#		circle radius 0.005 at j, yval
+		star at j, yval
 	}		
 
 #	yval = (0.10+i^3)^2 - 0.01
@@ -222,13 +224,17 @@ for j from 0.55 to 1.65 by 0.01 do {
 }
 
 # draw the Heirloom curve
-if (0) then {
+if (1) then {
 xofs = 0
 yofs = 0 #0.007
 for j from 0.55 to 1.65 by 0.025 do {
 	if (j >= 1.0) then { i = (j - 1) * 5 / 3 } else { i = 1 - j }
-	next hc at j, i^3
-	circle at j+xofs, i^3+yofs radius 0.025
+        i = i + hypp1 * 2
+        yval = i^3 + sqrt(linepenalty*100)/100
+	if (yval < yclip) then {
+		next hc at j, yval
+		circle at j+xofs, yval+yofs radius 0.025
+	}
 }
 }
 
@@ -351,19 +357,14 @@ for k from -150 to 150 by 025 do {
 
 # equations
 
-x1 = 0.67 # 0.85 # 0.75
+x1 = 0.85 # 0.67 # 0.85 # 0.75
 x2 = x1 + 0.05
 x3 = x2 + 0.025
 x4 = 1.5
-yy = 2.5
+yy = 2.5 # 2.6 # 2.5
 ystep = 0.125 # 0.1
 
 if (0) then {
-circle at x1, 2.5 radius 0.025
-circle at (x1+x2)/2, 2.5 radius 0.025
-circle at x2, 2.5 radius 0.025
-"Heirloom mode" ljust at x3, yy
-
 yy = yy - ystep
 # line from x1, 2.4 to x2, 2.4 dotted
 line from x1, yy to x2, yy dotted
@@ -389,31 +390,46 @@ line from x1, yy to x2, yy dotted 0.02
 yy = yy # - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 line from x1, yy to x2, yy solid
-"$t = 100~(linepenalty~+~| r | sup 3 ) sup 2~+~hypp sub 1$" ljust at x3, yy
-"\s-1(.wscalc 10)\s0" rjust at x4, yy
+# "$t = 100~((linepenalty~+~| r | sup 3 ) sup 2~+~hypp sub 1 )$" ljust at x3, yy
+# "\s-1(.wscalc 10)\s0" rjust at x4, yy
+"\s-1.wscalc 10\s0" ljust at x3, yy
 
 # wscalc 11
 yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 line from x1, yy to x2, yy solid
 circle radius 0.01 at (x1+x2)/2, yy
-"$t = 100~(linepenalty~+~hypp sub 1~+~| r | sup 3 ) sup 2$" ljust at x3, yy
-"\s-1(.wscalc 11)\s0" rjust at x4, yy
+# "$t = 100~( (linepenalty~+~hypp sub 1~+~| r | sup 3 ) sup 2 )$" ljust at x3, yy
+# "\s-1(.wscalc 11)\s0" rjust at x4, yy
+"\s-1.wscalc 11\s0" ljust at x3, yy
 
 # wscalc 12
 yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 line from x1, yy to x2, yy solid
-"$t = 100~(0.10~+~| r | sup 3 ) sup 2 + linepenalty + hypp sub 1$" ljust at x3, yy
-"\s-1(.wscalc 12)\s0" rjust at x4, yy
+star at (x1+x2)/2, yy
+# "$t = 100~((0.10~+~| r | sup 3 ) sup 2 + linepenalty + hypp sub 1 )$" ljust at x3, yy
+# "\s-1(.wscalc 12)\s0" rjust at x4, yy
+"\s-1.wscalc 12\s0" ljust at x3, yy
 
 # wscalc 6
 yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 # line from x1, yy to x2, yy solid
 line from x1, yy to x2, yy dotted
-"$t = 100 | r | sup 6~+~linepenalty~+~hypp sub 1$" ljust at x3, yy
-"\s-1(.wscalc \06)\s0" rjust at x4, yy
+# "$t = 100 ( | r | sup 6~+~linepenalty~+~hypp sub 1 )$" ljust at x3, yy
+# "\s-1(.wscalc \06)\s0" rjust at x4, yy
+"\s-1.wscalc \06\s0" ljust at x3, yy
+
+# wscalc 0
+yy = yy - ystep
+circle at x1, yy radius 0.025
+circle at (x1+x2)/2, yy radius 0.025
+circle at x2, yy radius 0.025
+line from x1, yy to x2, yy solid
+# "$t=100~( ( 2~times~hypp sub 1~+~|r| ) sup 3~+~linepenalty )$" ljust at x3, yy
+# "\s-1(.wscalc \00)\s0" rjust at x4, yy
+"\s-1.wscalc \00\s0" ljust at x3, yy
 
 # yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
@@ -429,24 +445,29 @@ line from x1, yy to x2, yy dotted
 gsize 10.8
 .EN
 
-.PL +2
 
-.@Figurecaption "Effect of penalties on .wscalc 10, 11, 12, and 6"
-\!.@Labeli figure:texcurves-penalties
+.@Figurecaption "Effect of hyphenation penalty @i[hypp1] = 50"
+.@Labeltag figure:texcurves-penalties
 
 .@Begin Captiontext
-The applied penalties are $hypp sub 1 = 25$ and $linepenalty = 20$.
+For @req[.wscalc 10], @i[linepenalty] = 10;
+for @req[.wscalc 11], @i[linepenalty] = 1;
+for @req[.wscalc\~12], @i[linepenalty] = 0;
+for @req[.wscalc 6] and @req[0], $linepenalty = sqrt {10}$ .
+Applied penalty values are the user inputs divided by 100.
 
-With @req[.wscalc 6] and @req[.wscalc 12] the curve is shifted up by the sum
-of the penalties without altering the shape.
+Curves 10, 12, and 6 are shifted upward by the value of @i[hypp1].
+With curve\~10, if @i[linepenalty] is increased, the curve begins to distort
+like curve\~11.  Curves 12 and 6 do not have this distortion.
 
-The \*[tex]82 curve, @req[.wscalc 10], is shifted upward by @i[hypp]@-[1] and
-the shape is narrowed by the change in @i[linepenalty].
+Curve\~11 is shifted upward by $sqrt { italic "hypp1" }$ .  The effective hyphenation
+penalty near the center of the range is less than @i[hypp1]; farther away
+it becomes greater than @i[hypp1].
 
-The Knuth-Plass curve, @req[.wscalc 11] becomes distorted in the "decent" range
-and favors hyphenated lines over unhyphenated lines.
+Curve 0 is shifted upward by
+$up 20 { "" sup 3 } back 35 sqrt { 2 times italic "hypp1" }$ .
+The curve becomes severely distorted due to the interaction between
+@i[hypp1] and the adjustment ratio $r$.
 
-To closely approximate the curve of @req[.wscalc\~10] without changing the
-effective values of @i[wslwr] and @i[wsupr], use @req[.wscalc\~56] (not shown).
 .@End Captiontext
 .@End Figure

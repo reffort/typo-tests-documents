@@ -2,10 +2,6 @@
 .\" Customizations
 .\"
 .
-.\"	special character \[ecircumflexacute] for libertinus serif
-.
-.char \[e^'] \[ecircumflex]\v'-0.17m'\[acutecomb]\v'0.17m'
-.
 .
 .\"	Terms that need some fancy formatting
 .\"	These are set up using troff's .ds strings, but they could also
@@ -17,6 +13,9 @@
 .ds ntroff \@{n\(hyt\(hyroff\@}
 .ds TEX \@{T\h'-.08m'\v'0.2m'E\v'-0.2m'\h'-0.05m'X\@}
 .ds pdfTEX \@{\f(ACpdf\fP\\*[TEX]\@}
+.ds TeX82 \@{T\h'-.08m'\v'0.2m'E\v'-0.2m'\h'-0.05m'X\f(UC82\@}
+.ds TEX82 \@{\f(UCTEX82\@}
+.@String TeX \*[TEX]
 .
 .als TeX TEX
 .als tex TEX

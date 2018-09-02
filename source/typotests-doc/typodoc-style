@@ -6,21 +6,21 @@
 .\"	cases intended to try to induce the macros to fail in inexplicable ways.
 .\"
 .
-.\"	Remap superscripts and subscripts to take advantage of OpenType features
-.\"	for numbers.  Letters are not well represented in libertinus's supr and
-.\"	subs, so use fake superscripts and subscripts for them.
+.\"	Superscripts, subscripts, other character styles can be remapped here.
 .
-.Define + font SUP script "" zoom ""
-.Define - font SUB script "" zoom ""
-.Define o hsp 0.1m script +0.40m zoom 0.65
-.Define u hsp 0.1m script -0.22m zoom 0.65
-.
+.\"Define o+ font SUP script "" zoom ""
+.\"Define o- font SUB script "" zoom ""
+.\"Define + script +0.40m zoom 0.65
+.\"Define - script -0.22m zoom 0.65
 .
 .\"	Some abstract character styles
 .
 .Define cmd font T
 .Define var font I
 .ds @req \@{\fB\%\&\\$*\@}
+.
+.Define W canbreak no
+.Define w canbreak no
 .
 .
 .\"	Misc. font assignments
@@ -36,47 +36,53 @@
         pagewidth  6.69i pageheight 9.61i \
         pageoffset 72p linelength 28P \
         doublesided yes \
-        headerbaseline 46p textbaseline 77p footerbaseline -33p \
+        textbaseline 77p \
         use Bodyfont spacing 16.0p \
         indent +16p linesperpage 35 \
         indentfirstparagraphs yes \
         blanklines break \
-        footnotes "*" widowaction warn
+        footnotes "@*" widowaction warn
 .
 .Define HnJ \
+        hypp "50 100 100 50" hy 4 hlm 2 hylen 5 nhychar "-\(en" exhyp 50 \
         padj 1 justify both fill yes lg 1 \
         ss "12 0" minss 8 \
         wscalc 6 wrdspc "80 133" wsmin 0 \
-        hypp "50 100 100 50" hy 4 hlm 2 hylen 5 nhychar "-\(en" \
-        exhyp 50 uchyp 50 \
         letadj "98 100 12 101.5 100" \
         letcalc 4 letthresh "92 112" \
-        letpen "2 1 1" adjletpen "2 100" letstren 100 \
-        elppen -3 elwpen 10 rhanglevel 2 \
+        letpen "8 1 1" adjletpen "2 100" letstren 100 \
+        elppen -3 rhanglevel 2 \
         adjpenalty "50 80 133" overrunpenalty "10 25 16p" \
         linepenalty 1 lastlinestretch 1
 .
 .Define Text \
         leftmargin +0 rightmargin +0 indent +15p \
         break around above 0 below 0 spread 0 \
-        alignafter no resume yes \
+        align no resume yes \
         indentfirstpara no \
         fill yes  justify both \
-        centered no  need 0  headers on 
+        centered no  need 0
 .Define Insert use Text \
         leftmargin +30p  rightmargin +30p  indent +0 \
-        above 0.5v  below 1v-0.5v  alignafter no
+        above 0.5v  below 1v-0.5v  align no
 .Define Quotation use Insert spread 0 indent +15p firstindent +0
-.Define Enumerate use Insert leftmargin +17p indent -15p rightmargin +15p \
-        spread 0 witheach "\En[:paragraphcounter:].\t\c"
-.Define Itemize use Insert alignafter no spread 0 indent -14p \
-        witheach "\[bullet]\t\c"
+.Define Enumerate use Insert \
+        leftmargin +(\w'\0.\[3msp]'u) \
+        indent -(\w'\0.\[3msp]'u) \
+        rightmargin +0 spread 0 \
+        numbered "@1.\[3msp]@,@a.\[3msp]@,@i.\[3msp]" \
+        numberlocation lfr
+.Define Itemize use Insert align no spread 0 rightmargin +0\
+        leftmargin "+(15p+\w'\[bullet1]\ 'u)" \
+        indent "-(15p+\w'\[bullet1]\ 'u)" \
+        numbered "\[bullet1]\ @,\[bullet2]\ @,\[bullet3]\ " \
+        numberlocation lfr
 .Define Verse use Insert leftmargin +45p rightmargin +30p justify flushleft \
         indent -15p indentfirstpara yes smartquotes off
 .Define Description \
         break around above 0.5v firstparaindent +0 \
         leftmargin +80p rightmargin -0 indent -80p spread 0 \
-        below 1v-0.5v alignafter no indentfirstpara yes
+        below 1v-0.5v align no indentfirstpara yes
 .Define Center break around fill no justify center indent +0
 .Define Flushright break around fill no justify right
 .Define Verbatim \
@@ -93,32 +99,35 @@
 .\"	Variations indented from the left for "Recipes" (Document-specific)
 .\"
 .
-.Define Itemize2 use Itemize spread 1v \
-        leftmargin +12p indent -12p rightmargin 0 above 0v
-.Define Itemize3 use Itemize \
-        leftmargin +15p indent -12p rightmargin +15p witheach "\[uni2023]\t\c"
-.Define Example2 use Example leftmargin +15p rightmargin +15p
-.Define Authorbreak break around spacemode yes above 0.5v alignafter yes \
-        resume no fill no justify center firstpara yes \
-        use Bodyfont witheach "\[uniE007]"
+.Define Itemize2 use Itemize \
+        above 0.5v below 1v-0.5v spread 0 \
+        leftmargin +12p indent -12p rightmargin +0 \
+        numberlocation lfl
+.Define Example2 use Example leftmargin +12p rightmargin +12p
 .
 .\"
 .\"	Back to Standard environments
 .\"
 .
 .Define Equation use Center \
-        above 0.5v below 1v-0.5v indent +0 alignafter yes leftmargin +0
+        above 0.5v below 1v-0.5v indent +0 align after leftmargin +0
 .Define Glossary use Text leftmargin +15p indent -15p
 .Define Glossaryinsert use Glossary above 1v below 1v
 .Define Caption use Center above 1v font R size 10.86 spacing 14p
 .Define Figurecaption use Caption \
+        counter Figurecounter \
         witheach "\@{\fBFigure \E*[@refcounter Figurecounter]:\@} \c"
 .Define Tablecaption use Caption \
+        counter Tablecounter \
         witheach "\@{\fBTable \E*[@refcounter Tablecounter]:\@} \c"
 .Define Captiontext use Text \
         size 10.86 spacing 14p indent +11p firstindent +0 above 0.5v
 .Define Tablenotes use Bodyfont size 9.5p spacing 12.5p indent +0
 .Define IP leftmargin +15p indent -15p
+.Define Spacebreak break around spacemode yes above 0.5v align after \
+        resume no fill no justify center firstpara yes \
+        use Bodyfont afterentry "\[spbreakorna]"
+.Define Authorbreak use Spacebreak
 .
 .\"	H0 is a generic template for headings.
 .\"	H1 modifies H0 for the section 1 heading, is template for other sections.
@@ -130,8 +139,8 @@
 .Define H0 break before resume no above 1v below 0 alignafter no fill no \
         spacemode yes need 3v firstpara yes leftmargin 0 rightmargin 0 indent +0
 .Define H1 use H0 pagebreak untilodd above 1v below 4v use Headingfont \
-        counter H1counter headers off alignafter yes centered yes \
-        afterentry "\v'-0.5v'\(sc\^\E*[@refcounter H1counter]"
+        counter H1counter headersbefore off headersafter on align after \
+        centered yes afterentry "\v'-0.5v'\(sc\^\E*[@refcounter H1counter]"
 .Define H1a use H1 pagebreak before below 2v dropfolio on
 .Define H2 use H0 centered no justify left use Subheadfont \
         above 0.7v below 1v-0.7v need 4v
@@ -142,37 +151,46 @@
 .Define Transparent
 .Define Group group yes break before
 .Define Float float yes break before
-.Define Figure break around above 1v below 1v float yes counter Figurecounter
-.Define Fullpagefigure use Figure floatpage yes above 0 below 0
+.Define Figure break around above 1v below 1v float yes
+.Define Fullpagefigure use Figure float page above 0 below 0
 .Define Table break around above 0.5v float yes \
         leftmargin +0 indent +0 rightmargin +0 \
-        below 0.2v alignafter yes counter Tablecounter
-.Define Heretable use Table float no counter ""
-.Define Blankpage floatpage yes break before continue yes
+        below 0.2v align after
+.Define Fullpagetable use Table above 0 below 0 align no float page
+.Define Heretable use Table float no below 1v-0.5v align no
+.Define Blankpage float page break before continue yes
 .
 .Define Frontmatter use Text headers off footers off pagebreakafter ifodd
 .Define Titlepage break before pagebreak after centered yes headers off
 .Define Titlebox break before fixed 8v font LST size 12 indent +0
-.Define Copyrightnotice font R size 10p spacing 12p fill no indent +0 \
-        below 0 float bottom
+.Define Authorbox use Titlebox fixed 14v font C
+.Define Copyrightnotice font R size 10p spacing 12p spread 0.25v \
+        indent +0 justify left below 0 float bottom
 .
 .Counter H1counter format 1
 .Counter Figurecounter format 1
 .Counter Tablecounter format 1
 .
-.Pageheading odd \
-         left   "" \
-         center "" \
-         right  "\@{\f[PNFont]\s[9.5]%\@}"
-.
-.Pageheading even \
-         left   "\@{\f[PNFont]\s[9.5]%\@}" \
-         center "" \
-         right  ""
+.Define HeaderEnv \
+        fixed 46p font PHFont size 12 \
+        leftmargin 0 rightmargin 0 indent +0 break no continue yes
+.Define FooterEnv \
+        use HeaderEnv fixed -46p font PNFont size 9.5
+.Header odd \
+        left   "\f[PNFont]\s[9.5]\(sc\^\E*[@refcounter H1counter]" \
+        center "" \
+        right  "\f[PNFont]\s[9.5]%" \
+        titleenv HeaderEnv
+.Header even \
+        left   "\f[PNFont]\s[9.5]%" \
+        center "" \
+        right  "\f[PNFont]\s[9.5]\(sc\^\E*[@refcounter H1counter]" \
+        titleenv HeaderEnv
+.Footer both left "" center "%" right "" titleenv FooterEnv
 .
 .\"
 .\" The margin note macros were adapted from the -mom macros, which were adapted
-.\" by Peter Schaeffter from Werner Lembert's code.  They have been modified to
+.\" by Peter Schaffter from code by Werner Lembert.  They have been modified to
 .\" use Heirloom's \P traps and to remove groffisms.  New margin note macros
 .\" will eventually be written to take advantage of the environment mechanism,
 .\" so for now they are just stuck on with some bubblegum and duck tape.

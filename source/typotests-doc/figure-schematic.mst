@@ -1,12 +1,8 @@
 .\"
 .\" Schematic diagram of figure 1
 .\"
-.\" The following override is because "float" doesn't currently work with grap
-.\" pictures, although it works with everything else.  However, "group" *does*
-.\" work with grap images.
-.\" 
 
-.@Begin Figure float no group yes
+.@Begin Figure float no group yes below 0
 .
 .EQ
 delim $$
@@ -136,7 +132,7 @@ if (letthreshupr > 0.60) then {
 # line between good and bad
 
 line dashed 0.025 from xmin, 1 to xmax, 1
-"``Good''" size 8 below at (wslwr+wsupr)/2, 0.98
+"``Good''" size 8 below at (letthreshlwr+letthreshupr)/2, 0.98
 # "``Bad''"  size 8 at (xmin+wslwr)/2, 1.05
 "``Bad''"  size 8 above at 0.73, 1.0
 "``Bad''"  size 8 above at (xmax+wsupr)/2, 1.0
@@ -146,7 +142,8 @@ line dashed 0.025 from xmin, 1 to xmax, 1
 if (hypp > 0) then {
 	line dotted 0.1 from xmin + 0.01, hypp to xmax, hypp
 #	" \|@i[hypp]@-[1] = 50"  size 8 ljust at xmin, hypp+0.05
-	"\^$hypp sub 1$ = 50"  size 8 ljust at xmin, hypp+0.05
+#	"\^$hypp sub 1$ = 50"  size 8 ljust at xmin, hypp+0.05
+	"\^\f[I]hypp1\fP = 50"  size 8 ljust at xmin, hypp+0.05
 }
 
 # draw the curves
@@ -391,20 +388,21 @@ x3 = x2 + 0.025
 .G2
 
 .@Begin Figurecaption above 1.25v
-Diagram of the paragraph settings of Figure 1
+Diagram of the paragraph settings of Figure @tagref[MacroPage]
 .@End
-\!.@Labeli SchematicFigure
+.@Labeltag SchematicFigure
 
 .@Begin Captiontext
 The U-shaped curve represents the word space penalty @i[t] defined by
 @req[.wscalc\~6] and @req[.wrdspc\~80\~133].  The range of preferred space sizes
-is 80% to 133% of the desired space size (@req[.ss\~12]) and the minimum space
+is 80% to 133% of the nominal space size (@req[.ss\~12]).  The minimum space
 size is 66.7% (@req[.minss\~8]).  If the space size ratio @i[R] is between
-92% and 112%, no letter adjustment is applied (@req[.letthresh\~92\~112]).
-Fitness classes are the standard \*[TeX] classes.
+92% and 112% (@req[.letthresh\~92\~112]), no letter adjustment is applied.
 
 Penalties are added to the word space penalty curve, shifting it vertically
 by the amount of the penalty.  If the line were hyphenated, the entire curve
-would be shifted upward by 50, the value of @i[hypp]@-[1].
+would be shifted upward by 50, the value of @i[hypp1].
+
+Space Size Bins are described on pages @pageref[.wsmark] and @pageref[table:binclasses].  Fitness Classes are the standard \*[tex] classes, described on page\~@pageref[table:binclasses].
 .@End Captiontext
 .@End Figure

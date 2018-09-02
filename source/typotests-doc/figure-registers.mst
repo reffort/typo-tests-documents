@@ -1,7 +1,6 @@
 .Begin Fullpagefigure
 .Figureheading "READ-ONLY NUMBER REGISTERS"
-\!.Labeli table:readonlyregisters
-.PL +3
+.Label table:readonlyregisters
 
 .rs
 .ps 11
@@ -12,8 +11,8 @@ f = floating point, i = integer, s = string, % = percent, u = units
 .ta
 .TS
 center ;
-C 1 s 1 s 1 s
-L 1 C 1 C 1 L.
+C 2 s 2 s 2 s
+L   C   C   L.
 Paragraphing
 .sp 0.25v
  .adjpenalty	f		adjacent line incompatibility penalty
@@ -28,7 +27,7 @@ Paragraphing
  .overrunmin	i	u	last line minimum length
  .overrunpenalty	f		progressive overrun penalty
  .overrunthreshold	f	%	threshold for progressive overrun penalty
- .rhanglevel	i		right margin adjustment line breaking level
+ .rhanglevel	i		right margin adjustment accounting level
  .wscalc\&	i		word space calculation method
  .wslwr\&	f	%	lower ``good'' word space boundary
  .wsmark\&	i		word space mark level
@@ -58,4 +57,5 @@ L C C L.
 .Begin Figurecaption above 0.5v
 Read-only number registers
 .End Figurecaption
+.Tag table:readonlyregisters
 .End Fullpagefigure

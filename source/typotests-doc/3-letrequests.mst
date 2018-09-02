@@ -1,9 +1,9 @@
 .H1a LETTER ADJUSTMENT REQUESTS
-.Labeli lettercontrol
+.Labeltag lettercontrol
 .Pageheading center "letter adjustment requests"
 
 
-.@Begin Transparent letspc "98.5 101" letshp "99 101" letpen "7 1 1"
+.@Begin Transparent letspc "98.5 101" letshp "99 101"
 
 .TERM2 .adjletpen "pen pct" "0 100"
 .
@@ -29,44 +29,30 @@ a penalty of 30 is applied if the letter adjustment of one line is shrunk by
 .TERM2 .letcalc n 0
 .
 Defines the method used to calculate letter adjustment.  The values of @i[n]
-are listed in Table 2.
+are listed in Table @tagref[table:letadjmethods].
 
 .\" This table will actually fit at the bottom of page 16, but it is being
 .\" forced to the top of page 17 because it works better there.  The "above 0"
 .\" override compensates for positioning details that aren't implemented yet.
 
-.@Begin Table above 0 below 0.5v float next
+.@Begin Table above 0 below 0.5v float defer
 .@Begin Tablecaption above 0 below 0.5v
 Letter adjustment methods
 .@End Tablecaption
-\!.@Labeli table:letadjmethods
-.
-.\" ^^^	The "\!" hack is necessary because registers used within a P trap macro
-.\"	no longer work in a diversion.
-.\"
-.\"	Cause: Git ref 3f47f6fc00... "Preserve \\ through diversions
-.\"	(like groff, unlike traditional roff)", 25 Jun 2015.  This change
-.\"	replaces "\\" with "\e" when in a diversion, which causes the
-.\"	P trap macro to record the page number as "\en%" instead of "17".
-.\"
-.\"	Typing "\!" and using a non-P trap macro works, unless:
-.\"
-.\"	1. We need a P trap in a diversion, or
-.\"
-.\"	2. We are not in a diversion, when dpost will give up, terminate
-.\"	   troff, and leave behind only a mostly useless error message.
+.@Labeltag table:letadjmethods
 .
 .ta
 .TS
 center ;
 C 2 L.
 @i[n]	Description
-_
+=
 0	Heirloom mode (default)
 1	Letter adjustment last (near-bad lines only)
 2	Letter adjustment first, then word space adjustment
 3	Letter adjustment proportional to space adjustment
 4	Letter adjustment distributed among glyphs and spaces
+_
 .TE
 .End Table
 
@@ -92,10 +78,10 @@ This method has the best word space uniformity and line break quality, but the
 most glyph distortion.
 
 Method 3 applies letter adjustment based on the amount of word space adjustment.
-Word spaces near the desired size have little letter adjustment, borderline
+Lines with word spaces near the nominal size have little letter adjustment, borderline
 ``bad'' spaces have the maximum.
 
-Method 4 distributes letter adjustment among all the glyphs and spaces.
+Method 4 distributes letter adjustment among the glyphs and spaces.
 Its line breaking characteristics are similar to Method\~2, but the overall
 amount of letter adjustment is less and the line breaks are sometimes not quite
 as good.
@@ -118,11 +104,11 @@ adjustment on.
 
 If letter adjustment is switched off by setting the third argument to zero,
 e.g., @w[@req[.letadj @p[lspmin lshmin] 0]],
-some tight lines that have a space size near @var[minss] will not justify
-correctly if @var[lspmin] and @var[lshmin] are not 100.
-The underlying Heirloom code always takes all available
+lines that have a space size near @var[minss] may not justify
+correctly with methods 1 through 4 if @var[lspmin] and @var[lshmin] are not 100.
+The underlying Heirloom code always takes
 letter shrink into account when determining whether the text will fit on the
-line, but the new methods will not apply it if @var[letss] is zero.
+line, but the new methods do not apply it if @var[letss] is zero.
 
 
 .TERM2 .letpen "pen shrinkthresh stretchthresh" "0 1.0 1.0"
@@ -142,7 +128,7 @@ The penalty has a reference value of @i[pen] and varies based on the threshold
 values @w[@i[shrinkthresh]] and @i[stretchthresh], similar to the word space
 penalty. @w[@req[.letpen 10 0.5 0.65]] applies a penalty of 10 when the total
 amount of letter adjustment is shrunk by 0.5% or stretched by\~0.65%.  The
-penalty is progressive: it is zero when the line uses no letter adjustment,
+penalty is progressive: it is zero when the line needs no letter adjustment,
 and it becomes sharply greater than @i[pen] as the amount of letter adjustment
 becomes greater than the threshold.
 
@@ -150,7 +136,7 @@ becomes greater than the threshold.
 .TERM2 .letshp "lwr upr" "x x"
 .
 Changes the dynamic glyph scaling (letter shaping) limits to @i[lwr] and @i[upr].
-Equivalent to the request @w[@req[.letadj x @p[lwr] x x @p[upr]]],
+Equivalent to the request @req[.letadj\~x\~\f(BIlwr\fP\~x\~x\~\f(BIupr\fP],
 but is less error prone and does not throw a ``bad number'' message.
 Useful as an override when dealing with problem paragraphs.
 @req[.letshp\~99.6\~101] shrinks the glyphs by a maximum of 0.4% or stretches
@@ -160,7 +146,7 @@ them by a maximum of 1.0% of their normal width.
 .TERM2 .letspc "lwr upr" "x x"
 .
 Changes the dynamic letter spacing limits to @i[lwr] and @i[upr].  Equivalent
-to the request @w[@req[.letadj @bi[lwr] x x @bi[upr] x]],
+to the request @req[.letadj\~@bi[letlwr]\~x\~x\~@bi[letupr]\~x],
 but is less error prone and does not throw a ``bad number'' message because of
 the @i[x] place\%holders.  Useful as an override when dealing with problem
 paragraphs.
@@ -186,8 +172,8 @@ by @req[.letadj].
 
 .TERM2 .letthresh "letthreshlwr letthreshupr" "100 100"
 .
-Establishes a region surrounding the desired space size where no letter
-adjustment is applied.  The values are expressed in percent of the desired
+Establishes a region surrounding the nominal space size where no letter
+adjustment is applied.  The values are expressed in percent of the nominal
 space size.  @var[letthreshlwr] establishes the smallest space size in this
 region, @var[letthreshupr] the largest.  The value of @var[letthreshlwr] must
 be 100 or less, and @var[letthreshupr] must be 100 or greater.  With the new
@@ -195,28 +181,44 @@ be 100 or less, and @var[letthreshupr] must be 100 or greater.  With the new
 (the third argument to the @req[.letadj] request).
 
 @req[.letthresh 83 125] applies no letter adjustment if the word spaces for
-the line are between 83% and 125% of the desired size.  Within this region,
+the line are between 83% and 125% of the nominal size.  Within this region
 only the space size is allowed to change.
 
 @req[.letthresh 100 100] sets the size of the region to zero and applies
 letter adjustment to all lines.
 
-.@Authorbreak
+.@Spacebreak
 
 .padj 0
-Letter adjustment can also be applied in single-line mode.
+Letter adjustment can also be applied in single-line mode @req[.padj\~\n[.padj]].
 It can markedly improve line breaks and overall appearance even without the use
 of paragraph-at-once justification.
 The requests @req[.letadj], @req[.letcalc], @req[.letstren], @req[.letthresh],
 @req[.letshp], and @req[.letspc] work in both modes.
 
-.@Authorbreak
+.@Spacebreak
 
-This section on letter adjustment requests provides an example of dynamic
+Section @tagref[lettercontrol] provides an example of dynamic
 letter spacing and glyph scaling used simultaneously.
 Letter spacing is from \n[.lspmin]% to \n[.lspmax]% and
 glyph scaling from \n[.lshmin]% to \n[.lshmax]%.
-The rest of the document uses only letter spacing as listed in Figure\~1.
+The rest of the document uses only letter spacing as listed in
+Figure\~@tagref[MacroPage].
 
 .@End Transparent
 
+.@Begin Transparent wscalc 10 letcalc 2 letspc "100 100" letshp "98 102" \
+        letthresh "100 100" letpen 1
+
+The appearance of glyph scaling is somewhat unpredictable, depending on the
+resolution of the output device, the algorithm that draws the glyphs, the
+particular font, and its size.
+On some devices a page can look very good, while on others the same page
+might have some glyphs that are too dark or too light, imparting
+an unattractive, blotchy look.
+There is also a substantial speed penalty when rasterizing the pages.
+This paragraph uses a fairly large amount of glyph scaling
+(from \n[.lshmin]% to \n[.lshmax]%) and no letter spacing, as described in
+the \*[pdftex] setup on page\~@pageref[pdftexsample].
+
+.@End Transparent

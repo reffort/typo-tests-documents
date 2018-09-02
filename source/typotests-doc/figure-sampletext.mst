@@ -1,0 +1,99 @@
+.@Newpage
+.
+.\" This demo page uses the Alegreya fonts available from fontsquirrel.com.
+.\" These fonts have no kerning and no opentype features.  The Alegreya fonts
+.\" available on github have both, but the class kerning is not compatible
+.\" and there are extraneous and incorrect hints that cause some glyphs to
+.\" print very badly.  The ff ligatures are implemented as two components---
+.\" a modified 'f' followed by a standard 'f' or 2-character ligature---that
+.\" are pieced together using contextual substitution, so we have to fake it.
+.
+.char \[agrff] \[f.f]\[f]
+.char \[agrffi] \[f.f]\[fi]
+.char \[agrffl] \[f.f]\[fl]
+.
+.spacewidth
+.fp 0 AGR Alegreya-Regular otf
+.	flig AGR fi \(fi fl \(fl ff \[agrff] Fi \[agrffi] Fl \[agrffl]
+.	kernpair AGR L AGR o 30
+.	kernpair AGR a AGR pr -20
+.	kernpair AGR r AGR at 15
+.	kernpair AGR r AGR y 25
+.	kernpair AGR ` AGR TV 50
+.	kernpair AGR ? AGR ' 50
+.	kernpair AGR \(em AGR \(em -100
+.	kernbefore AGR \(em 50
+.	kernafter AGR \(em 50
+.	rhang AGR f -125 eo 20 h 20 s 30 wy -10 , 50 -\(hy 20
+.	lhang AGR w 30
+.fp 0 AGI Alegreya-Italic otf
+.fp 0 AGSC AlegreyaSC-Regular otf
+.	trackfu AGSC 50
+.	fspacewidth AGSC 150
+.	kernpair AGSC a AGSC r -40
+.	kernpair AGSC o AGSC r -35
+.	kernpair AGSC w AGSC a -45
+.	lhang AGSC i -10
+.
+.@Definefontset Defaultfonts R R  I I  C C
+.@Definefontset Demofonts  R AGR  I AGI  C AGSC
+.@Define r facecode R font ""
+.@Define i facecode I font ""
+.@Define c facecode C font ""
+.ds _font_
+.
+.@Define Demotext fontset Demofonts use r size 11p spacing 15.5p firstindent +0
+.
+.
+.\" This text is not very difficult to set at this point size and line length.
+.\" There is a weighted average of about 68 characters to a line, the spaces
+.\" are tight, and there are no unbreakable terms or inline equations, so it is
+.\" pretty easy to set acceptably no matter how it is done.  Sadly, it is
+.\" typical of how books are set these days.
+.
+.
+.@Begin Transparent fontset Defaultfonts facecode R
+.@Begin Demotext
+@c[it was a dark and stormy night;] the rain fell in torrents---except at
+occasional intervals, when it was checked by a violent gust of wind which swept
+up the streets (for it is in London that our scene lies), rattling along the
+house-tops, and fiercely agitating the scanty flame of the lamps that struggled
+against the darkness. Through one of the obscurest quarters of London, and
+among haunts little loved by the gentlemen of the police, a man, evidently of
+the lowest orders, was wending his solitary way. He stopped twice or thrice at
+different shops and houses of a description correspondent with the appearance
+of the @i[quartier] in which they were situated, and tended inquiry for some
+article or another which did not seem easily to be met with. All the answers he
+received were couched in the negative; and as he turned from each door he
+muttered to himself, in no very elegant phraseology, his disappointment and
+discontent. At length, at one house, the landlord, a sturdy butcher, after
+rendering the same reply the inquirer had hitherto received, added, ``But if
+@i[this] vill do as vell, Dummie, it is quite at your sarvice!'' Pausing
+reflectively for a moment, Dummie responded that he thought the thing proffered
+@i[might] do as well; and thrusting it into his ample pocket, he strode away
+with as rapid a motion as the wind and the rain would allow. He soon came to a
+nest of low and dingy buildings, at the entrance to which, in half-effaced
+characters, was written ``Thames Court.'' Halting at the most conspicuous of
+these buildings, an inn or ale-house, through the half-closed windows of which
+blazed out in ruddy comfort the beams of the hospitable hearth, he knocked
+hastily at the door. He was admitted by a lady of a certain age, and endowed
+with a comely rotundity of face and person.
+
+``Hast got it, Dummie?'' said she, quickly, as she closed the door on the guest.
+
+``Noa, noa! not exactly---but I thinks as 'ow \[twoemdash]''
+
+``Pish, you fool!'' cried the woman, interrupting him peevishly: ``Vy, it is no
+use desaving of me. You knows you has only stepped from my boosing-ken to
+another, and you has not been arter the book at all. So there's the poor cretur
+@w[a-raving] and @w[a-dying], and you \[twoemdash]''
+
+.@End Demotext
+
+.@Figurecaption "Sample book text"
+.@Labeltag figure:sampletext
+.@Begin Captiontext
+Paragraph settings are per Figure\~@tagref[MacroPage].
+The typeface is Alegreya roman, italic, and small caps, 11/15.5.
+The text is from @i[Paul Clifford], Edward Bulwer-Lytton\|[7].
+.@End Captiontext

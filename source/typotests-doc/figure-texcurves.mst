@@ -18,7 +18,7 @@ normalizedfc = 1	# 0 | 1
 thresh1 = 10/12	#0.8333	# lower decent class threshold if not normalized
 thresh2 = 1.25		# upper decent class threshold if not normalized
 
-hypp1 = 0.25
+hypp1 = 0 # 0.25
 
 #
 .ps 9
@@ -88,8 +88,10 @@ line dashed 0.025 from xmin, 1 to xmax, 1
 
 # hyphenation penalty
 
-line dashed 0.025 from xmin,hypp1 to xmax,hypp1
-"@i[hypp]@-[1]" size 8 at 0.61, hypp1 + 0.05
+if (hypp1 > 0) then {
+	line dashed 0.025 from xmin,hypp1 to xmax,hypp1
+	"$hypp sub 1$" size 8 at 0.61, hypp1 + 0.05
+}
 
 # draw the curves
 
@@ -134,17 +136,30 @@ for j from 0.55 to 1.65 by 0.01 do {
 #
 #	yval = (1+(100*i^3)^2)/10000
 #
-#	line penalty 0
+#	wscalc 6
 	yval = i^6 # + 0.04
-	if (yval < yclip) then { next tc at j, yval }
+	if (yval < yclip) then {
+		next tc at j, yval
+#		circle radius 0.005 at j, yval
+	}
 
-#	line penalty 10
+#	wscalc 10 TEX82
 	yval = (0.10+i^3)^2 # - 0.01
 	if (yval < yclip) then { next tc2 at j, yval }
 
-#	KP curve
+#	wscalc 11 KP curve
 	yval = (0.01+i^3)^2 # - 0.01
-	if (yval < yclip) then { next kp at j, yval }
+	if (yval < yclip) then {
+		next kp at j, yval
+		circle radius 0.01 at j, yval
+		}
+
+#	wscalc 12
+	yval = (0.10+i^3)^2 # - 0.01
+	if (yval < yclip) then {
+		next tc2 at j, yval
+		star at j, yval
+		}
 
 #	line penalty 20
 #	yval = (0.2+i^3)^2 - 0.04
@@ -218,7 +233,7 @@ for j from 0.55 to 1.65 by 0.01 do {
 }
 
 # draw the Heirloom curve
-if (0) then {
+if (1) then {
 xofs = 0
 yofs = 0 #0.007
 for j from 0.55 to 1.65 by 0.025 do {
@@ -350,9 +365,11 @@ for k from -150 to 150 by 025 do {
 x1 = 0.67 # 0.85 # 0.75
 x2 = x1 + 0.05
 x3 = x2 + 0.025
-x4 = 1.5
+x4 = 1.525
 yy = 2.5
 ystep = 0.125 # 0.1
+
+# ---------------------
 
 if (0) then {
 circle at x1, 2.5 radius 0.025
@@ -381,25 +398,29 @@ line from x1, yy to x2, yy dotted 0.02
 ## "$t~=~|r| sup 5$ for $|r| >~1.0$ only" ljust at x3, yy
 }
 
+# ---------------------
+
 # wscalc 10
 yy = yy # - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 line from x1, yy to x2, yy solid
-"$t = 100~(linepenalty + | r | sup 3 ) sup 2 + hypp sub 1$" ljust at x3, yy
+"$t = 100 times ( (linepenalty + | r | sup 3 ) sup 2 + italic \"hypp1\" )$" ljust at x3, yy
 "\s-1(.wscalc 10)\s0" rjust at x4, yy
 
 # wscalc 11
 yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 line from x1, yy to x2, yy dashed
-"$t = 100~(linepenalty + hypp sub 1 + | r | sup 3 ) sup 2$" ljust at x3, yy
+circle radius 0.01 at (x1+x2)/2, yy
+"$t = 100 times ( (linepenalty + italic \"hypp1\" + | r | sup 3 ) sup 2 )$" ljust at x3, yy
 "\s-1(.wscalc 11)\s0" rjust at x4, yy
 
 # wscalc 12
 yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 line from x1, yy to x2, yy solid
-"$t = 100~(0.10 + | r | sup 3 ) sup 2 + linepenalty + hypp sub 1$" ljust at x3, yy
+star at (x1+x2)/2, yy
+"$t = 100 times ((0.10 + | r | sup 3 ) sup 2 + linepenalty + italic \"hypp1\" )$" ljust at x3, yy
 "\s-1(.wscalc 12)\s0" rjust at x4, yy
 
 # wscalc 6
@@ -407,8 +428,17 @@ yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
 # line from x1, yy to x2, yy solid
 line from x1, yy to x2, yy dotted
-"$t = 100 | r | sup 6 + linepenalty + hypp sub 1$" ljust at x3, yy
+"$t = 100 times ( | r | sup 6 + linepenalty + italic \"hypp1\" )$" ljust at x3, yy
 "\s-1(.wscalc \06)\s0" rjust at x4, yy
+
+# wscalc 0
+yy = yy - ystep
+circle at x1, yy radius 0.025
+circle at (x1+x2)/2, yy radius 0.025
+circle at x2, yy radius 0.025
+line from x1, yy to x2, yy solid
+"$t=100 times ( ( 2 times italic \"hypp1\" + |r| ) sup 3 + linepenalty )$" ljust at x3, yy
+"\s-1(.wscalc \00)\s0" rjust at x4, yy
 
 # yy = yy - ystep
 # line from x1, 2.0 to x2, 2.0 solid
@@ -424,31 +454,29 @@ line from x1, yy to x2, yy dotted
 gsize 10.8
 .EN
 
-.PL +2
-
-.@Figurecaption "Default word space penalty curves for .wscalc 10, 11, and 12"
-\!.@Labeli figure:texcurves
+.@Figurecaption "\*[TeX]-like word space penalty curves"
+.@Labeltag figure:texcurves
 
 .@Begin Captiontext
-The \*[tex]82-like curves @req[.wscalc\~10] and @req[.wscalc\~12] have a little
-more selectivity and a slightly narrowed ``good'' word space range compared to
-the unmodified sixth-order curve.  Curve @req[.wscalc11] is based on the
-Knuth-Plass paper.
+With @i[hypp1]\~=\~0.  For @req[.wscalc 10], @i[linepenalty]\~=\~10;
+for @req[.wscalc\~11], @i[linepenalty]\~=\~1;
+all others, @i[linepenalty]\~=\~0.
+Applied penalty values are the user inputs divided by 100.
+The \*[tex]-like curves are  @req[.wscalc\~10], @req[11], and @req[12].
+The Heirloom curve, @req[.wscalc 0], is shown for reference.
 
-With @req[.wscalc 10] the default line penalty, 10 (0.10), shifts the curve
-vertically by\~1 and changes the curvature and the effective values of
+With @req[.wscalc 10] (\*[TeX82]) the default line penalty, 10 (0.10), shifts
+the curve vertically by\~1 and changes the curvature and effective values of
 @i[wslwr] and @i[wsupr].
-Increasing the line penalty increases the curvature and narrows the word space
-range.  When the line penalty is zero the curve is identical to @req[.wscalc\~6].
+When the line penalty is zero the curve is identical to @req[.wscalc\~6].
 
-The @req[.wscalc 11] default line penalty is 1 (0.01).  If the line is hyphenated,
-the calculation includes the current line hyphenation penalty before squaring
-the sum, which further distorts the shape.
+The @req[.wscalc 11] (Knuth-Plass) default line penalty is 1 (0.01).
+If the line is hyphenated, the calculation includes the current line
+hyphenation penalty before squaring the sum, which distorts the shape.
 
 The @req[.wscalc\~12] curve incorporates a fixed value of 0.10.
-The line penalty shifts the curve vertically without altering its shape.
+The line penalty and hyphenation penalty shift the curve vertically without
+altering its shape.
 
-.\"To closely approximate the curve of @req[.wscalc\~10] without changing the
-.\"effective values of @i[wslwr] and @i[wsupr], use @req[.wscalc\~56].
 .@End Captiontext
 .@End Figure

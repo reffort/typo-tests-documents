@@ -359,14 +359,14 @@ circle at (x1 + x2) / 2, yy radius 0.01
 .EN
 
 .@Figurecaption "Word space penalty curves"
-\!.@Labeli figure:standardpenaltycurves
+.@Labeltag figure:standardpenaltycurves
 
-.@Begin Captiontext above -0.5v
+.@Begin Captiontext
 Word space penalty @i[t] graphed as a function of the
 normalized space size adjustment ratio @i[r]
-for @req[.wscalc] curves 2, 3, 4, 6, and 9;
-the desired space size is @req[.ss\~12] and
-the preferred word space range is the default, @req[.wrdspc\~66.7\~150],
+for @req[.wscalc] curves 0, 2, 3, 4, 6, and 9;
+the nominal space size is @req[.ss\~12] and
+the preferred word space range is the \*[tex] default, @req[.wrdspc\~66.7\~150],
 except for the Heirloom curve, which has an effective range of 0% to 160%.
 
 The table shows the relationships of the raw space size adjustment ratio @i[R],

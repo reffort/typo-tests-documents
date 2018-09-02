@@ -4,7 +4,7 @@
 .
 .\" Break URLs in valid places
 .
-.char \[//]/\j'1000'/
+.char \[//] //
 .breakchar \n[.breakchar]:/\[//]
 
 
@@ -26,14 +26,17 @@ Masaryk University Brno, 2000.
 Nov.\~11, 2006. PDF. http:\[//]heirloom.sourceforge.net/doctools/just.pdf
 
 [4]	Joseph F. Osanna, Brian W. Kernighan, Gunnar Ritter, @i[et al.],
-``Nroff/Troff User's Manual,'' Feb\~10, 2016.
-PDF. http:\[//]n\[!-]t\[!-]roff.github.io/heirloom/doctools/troff.pdf.
+``Nroff/Troff User's Manual,'' Feb.\~10, 2016.
+PDF. http:\[//]@w[n-t-roff].github.io/heirloom/doctools/troff.pdf.
 
-[5]	Donald E. Knuth, ``TEX82,'' Annotated program listing, Feb.\~3, 2014.  PDF.
+[5]	Donald E. Knuth,
+``\*[TEX82],'' Annotated program listing, Feb.\~3, 2014.  PDF.
 http://www.tug.org/texlive//devsrc/Master/texmf-dist/doc/generic/knuth/tex/tex.pdf
 
-[6]	Donald E. Knuth, @i[The TEXbook],
+[6]	Donald E. Knuth,
+@i[The TEXbook],
 Boston, Mass.: Addison-Wesley Publishing Company, 1984.
+
 .@End Glossary
 
 .breakchar \r
@@ -47,3 +50,4 @@ All graphics and inserts are ``live'' using the
 The small dots near the corners of the pages coerce e-book readers to
 scale the pages to the same size.
 .@End Transparent
+

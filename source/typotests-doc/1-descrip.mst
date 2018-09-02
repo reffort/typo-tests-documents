@@ -40,7 +40,7 @@ as \*[nroff] has no typesetting capabilities.
 
 Each of the paragraph characteristics is assigned a relative importance
 (penalty), and the characteristics compete against each other in a multi-way
-tug o' war.  The version of the paragraph with the most neutral balance
+tug o' war.  The combination of line breaks with the most neutral balance
 (lowest total penalty) is deemed the ``best'' version.  The requests that
 control the characteristics can be grouped as follows:
 
@@ -115,7 +115,7 @@ used in hyphenated compound words.
 @req[.hypp] : Hyphenation penalties are applied differently in order to obtain
 a better tradeoff between space size and end-of-line hyphenation.  The behavior
 is more predictable and the penalty values have the same scale as all other
-penalties.  Heirloom mode is not affected.  A new argument @i[hypp]@-[4]
+penalties.  Heirloom mode is not affected.  A new argument @i[hypp4]
 discourages hyphenating the penultimate line of the paragraph.
 
 
@@ -134,13 +134,13 @@ portion of a document.
 The applicable requests need to be invoked only once, but if they are changed
 elsewhere in the document, for example, to deal with a problem paragraph, they
 should probably be restored to their initial settings.  The paragraph macro is
-a convenient place to do this.  The following example lists the normal settings
-used for this document:
+a convenient place to do this.  Figure\~@tagref[MacroPage] lists the normal
+settings used for this document.
 
 
 .Begin Fullpagefigure
 .Begin Example2 tabset "T \w'\ '*4u"
-\!.Labeli MacroPage
+.Labeltag MacroPage
 \!.rs
 .sp 1
 \&.do xflag 3
@@ -183,7 +183,7 @@ used for this document:
 
 The requests beginning with @req[.wrdspc] define the new methods and
 constraints, and the tradeoffs to be made among the paragraph's characteristics.
-The major characteristics are graphed in Figure\~2 on
+The major characteristics are graphed in Figure\~@tagref[SchematicFigure] on
 page\~@pageref[SchematicFigure].
 
 
@@ -199,7 +199,7 @@ penalty is applied instead.  These penalty values disfavor hyphenating the last
 word more than the penultimate line.
 
 @req[.wrdspc 80 133] : Defines the preferred space sizes to be from 80% to 133%
-of the desired size established by @req[.ss 12].  Spaces smaller than 80% or
+of the nominal size established by @req[.ss 12].  Spaces smaller than 80% or
 larger than 133% are discouraged at a higher marginal rate than spaces within
 the range.  The minimum space size is set by @req[.minss], the maximum is
 limited by the line length.
@@ -213,12 +213,12 @@ and sharply penalizes those beyond the values set by @req[.wrdspc].
 @req[.wsmin 0] : Defines a soft minimum space size.  The argument 0 switches
 the feature off; the minimum is enforced by @req[.minss].
 
-@req[.adjpenalty 50 80 130] : Adjacent line incompatibility penalty; it applies
+@req[.adjpenalty 50 80 133] : Adjacent line incompatibility penalty; it applies
 a penalty of 50 to consecutive lines if one has spaces smaller than 80% and the
-other has spaces larger than 130%.
+other has spaces larger than 133% of the nominal size.
 
 @req[.overrunpenalty 10 25 16p] : Discourages the last line of a paragraph from
-being shorter than 25% of full measure and prevents lines shorter than 16 points.
+being shorter than 25% of full measure and prevents last lines shorter than 16 points.
 
 @req[.linepenalty 1] : Slightly favors shorter paragraphs.
 
@@ -261,9 +261,10 @@ of the amount specified by @req[.letpen]).
 It isn't necessary to manually set all of these values if you are using one of
 the presets (@req[.wscalc\~0], @req[10], @req[11], or @req[12]).
 The presets initialize some of the paragraph controls (the requests @req[.hypp]
-through @req[.elppen] in Figure\~1), so it would only be necessary to make
-additional requests to configure the paragraph and letter adjust parameters
-that are not initialized by the preset, or to change a default setting.
+through @req[.elppen] in Figure\~@tagref[MacroPage]); it would only be
+necessary to make additional requests to configure the paragraph and letter
+adjust parameters that are not initialized by the preset, or to change a
+default setting.
 
 The current values of the parameters are accessible through the read-only
 number registers listed on page\~@pageref[table:readonlyregisters].  All values

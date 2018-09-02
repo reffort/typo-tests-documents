@@ -5,18 +5,24 @@
 ENHANCED PARAGRAPHING
 AND MICROTYPOGRAPHY FEATURES
 FOR N-T-ROFF
-.sp 3
+.End Titlebox
+.Begin Authorbox
 Roy Fisher
 2017/12/29
-.End Titlebox
+.End Authorbox
 .End Titlepage
 
 
 .Begin Copyrightnotice
-Copyright \[copyright] 2017 by Roy Fisher.
-This PDF may be freely distributed for personal use.
+Copyright \[copyright] 2017, 2018 by Roy Fisher.
+
+This PDF may be freely distributed so long as it is not used for commercial
+purposes in part or in whole or in the body of another document without
+permission, and provided this copyright notice is retained.
+
 \*[tex] is a trademark of the American Mathematical Society.
-Revised @value[date].
+
+Revised @value[date]
 .End
 
 
@@ -29,30 +35,30 @@ N 1 L 1 R 1 Rw(1n).
 1.	INTRODUCTION		@pageref[introduction]
 .sp 0.5v
 2.	PARAGRAPH CONTROL REQUESTS		@pageref[paragraphcontrol]
-	.adjpenalty	@pageref[.adjpenalty]
-	.elpchar	@pageref[.elpchar]
-	.elppen 	@pageref[.elppen]
-	.exhyp  	@pageref[.exhyp]
-	.hypp   	@pageref[.hypp]
-	.lastlinestretch	@pageref[.lastlinestretch]
-	.linepenalty	@pageref[.linepenalty]
-	.looseness	@pageref[.looseness]
-	.overrunpenalty	@pageref[.overrunpenalty]
-	.rhanglevel	@pageref[.rhanglevel]
-	.wrdspc 	@pageref[.wrdspc]
-	.wscalc 	@pageref[.wscalc]
-	.wsmark 	@pageref[.wsmark]
-	.wsmin  	@pageref[.wsmin]
-	.wswarn 	@pageref[.wswarn]
+	.adjpenalty		@pageref[.adjpenalty]
+	.elpchar		@pageref[.elpchar]
+	.elppen 		@pageref[.elppen]
+	.exhyp  		@pageref[.exhyp]
+	.hypp   		@pageref[.hypp]
+	.lastlinestretch		@pageref[.lastlinestretch]
+	.linepenalty		@pageref[.linepenalty]
+	.looseness		@pageref[.looseness]
+	.overrunpenalty		@pageref[.overrunpenalty]
+	.rhanglevel		@pageref[.rhanglevel]
+	.wrdspc 		@pageref[.wrdspc]
+	.wscalc 		@pageref[.wscalc]
+	.wsmark 		@pageref[.wsmark]
+	.wsmin  		@pageref[.wsmin]
+	.wswarn 		@pageref[.wswarn]
 .sp 0.5v
 3.	LETTER ADJUSTMENT REQUESTS		@pageref[lettercontrol]
-	.adjletpen	@pageref[.adjletpen]
-	.letcalc	@pageref[.letcalc]
-	.letpen 	@pageref[.letpen]
-	.letshp 	@pageref[.letshp]
-	.letspc 	@pageref[.letspc]
-	.letstren	@pageref[.letstren]
-	.letthresh	@pageref[.letthresh]
+	.adjletpen		@pageref[.adjletpen]
+	.letcalc		@pageref[.letcalc]
+	.letpen 		@pageref[.letpen]
+	.letshp 		@pageref[.letshp]
+	.letspc 		@pageref[.letspc]
+	.letstren		@pageref[.letstren]
+	.letthresh		@pageref[.letthresh]
 .sp 0.5v
 4.	RECIPES & MISCELLANEOUS DATA		@pageref[recipes]
 .TE
@@ -63,16 +69,19 @@ N 1 L 1 R 1 Rw(1n).
 .TS
 center ;
 N 0 L 2 Rw(1n).
-	Figure 1: Sample paragraph settings     	@pageref[MacroPage]
-	Figure 2: Diagram of settings of Figure 1	@pageref[SchematicFigure]
-	Figure 3: Read-only Number Registers    	@pageref[table:readonlyregisters]
-	Figure 4: Word space penalty curves     	@pageref[figure:standardpenaltycurves]
-	Figure 5: Word space penalty curve, .wscalc 10	@pageref[figure:texcurves]
-	Figure 6: Two-stage penalty curve       	@pageref[figure:twostagecurve]
+	Figure @tagref[MacroPage]: Sample paragraph settings     	@pageref[MacroPage]
+	Figure @tagref[SchematicFigure]: Diagram of settings of Figure @tagref[MacroPage]	@pageref[SchematicFigure]
+	Figure @tagref[table:readonlyregisters]: Read-only Number Registers    	@pageref[table:readonlyregisters]
+	Figure @tagref[figure:standardpenaltycurves]: Word space penalty curves     	@pageref[figure:standardpenaltycurves]
+	Figure @tagref[figure:texcurves]: \*[tex]-like word space penalty curves	@pageref[figure:texcurves]
+	Figure @tagref[figure:texcurves-penalties]: Effect of hyphenation penalty	@pageref[figure:texcurves-penalties]
+	Figure @tagref[figure:twostagecurve]: Two-stage penalty curve       	@pageref[figure:twostagecurve]
+.\"	Figure @tagref[figure:sampletext]: Sample book text	@pageref[figure:sampletext]
 
-	Table 1: Word space calculation methods 	@pageref[table:wsmethods]
-	Table 2: Letter adjustment methods      	@pageref[table:letadjmethods]
-	Table 3: Bin Classes and Adjustment Ratios	@pageref[table:binclasses]
+	Table @tagref[table:wsmethods]: Word space calculation methods 	@pageref[table:wsmethods]
+	Table @tagref[table:penaltycalculations]: Penalty calculations	@pageref[table:penaltycalculations]
+	Table @tagref[table:letadjmethods]: Letter adjustment methods      	@pageref[table:letadjmethods]
+	Table @tagref[table:binclasses]: Bin Classes and Adjustment Ratios	@pageref[table:binclasses]
 
 .TE
 .@End Frontmatter

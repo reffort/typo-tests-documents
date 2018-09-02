@@ -345,6 +345,9 @@ x3 = x2 + 0.025
 #line from x1, 2.3 to x2, 2.3 dashed 0.02
 "$t~=~100 | r | sup 3$" ljust at 0.75, 0.6
 
+"$t~=~100~times~down 50 left {~ up 40 matrix { lcol { { | r | sup { n~roman {div}~10 }} above { | r | sup { n~roman{mod}~10 } } } lcol { { if~r~<=~1; } above { roman {otherwise.} }}}$" at 1.05, 2.25
+
+
 #line from x1, 2.2 to x2, 2.2 dotted 0.02
 #"$t~=~|r| sup 4$" ljust at x3, 2.2
 
@@ -353,15 +356,15 @@ x3 = x2 + 0.025
 ## "$t~=~|r| sup 5$ for $|r| >~1.0$ only" ljust at x3, 2.1
 
 # line from x1, 2.0 to x2, 2.0 solid
-"$t~=~100~r sup 6$" ljust at 0.64, 2.5
+"$t~=~100~r sup 6$" ljust at 0.64, 2.65
 
 # line from x1, 1.95 to x2, 1.95 solid
 # "$t~=~{( 1 + 100 |r| sup 3 ) sup 2 } over 10000~approx~r sup 6$" ljust at x3, 1.97
 
 .G2
 
-.@Figurecaption "Two-stage penalty curve @req[.wscalc 36]"
-\!.@Labeli figure:twostagecurve
+.@Figurecaption "Two-stage penalty curve"
+.@Labeltag figure:twostagecurve
 
 .EQ
 gsize 10.8
@@ -370,11 +373,11 @@ gsize 10.8
 .@Begin Captiontext
 Two-stage curves apply the first digit (tens) to the ``good'' portion of the
 penalty curve and the second digit (ones) to the ``bad'' portion.
-With @req[.wscalc\~36],
+With the curve @req[.wscalc\~36], shown above,
 ``good'' spaces will be penalized by $t~=~100 | r | sup 3$
 and ``bad'' spaces by $t~=~100~r^sup 6$,
 causing them to be disfavored at a greater rate.
-The dotted line represents the unused portion of of the cubic curve.
+The dotted line represents the unused portion of the cubic curve.
 @i[wslwr] and @i[wsupr] are the global defaults.
 .@End Captiontext
 .@End Figure
