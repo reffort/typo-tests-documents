@@ -219,6 +219,7 @@ an unattractive, blotchy look.
 There is also a substantial speed penalty when rasterizing the pages.
 This paragraph uses a fairly large amount of glyph scaling
 (from \n[.lshmin]% to \n[.lshmax]%) and no letter spacing, as described in
-the \*[pdftex] setup on page\~@pageref[pdftexsample].
+the \*[pdftex] setup on page\~@pageref[pdftexsample];
+the character shapes are visibily distorted.
 
 .@End Transparent

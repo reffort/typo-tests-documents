@@ -225,7 +225,7 @@ for i from 0.6 to 1.6 by 0.1 do {
 	line from i, yu to i, yu + 0.42 * (yl - yu)
 	sprintf ("%.0f", i * 100) at i, yu + 0.75 * (yl - yu)
 }
-"Space Size" ljust "Ratio (%) \ \fIR\fP" at tstart, ym + lblofs
+"Space Size" ljust "Ratio (%) \fIR\fP" at tstart, ym + lblofs
 
 
 # troff ss units

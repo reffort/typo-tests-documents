@@ -16,9 +16,18 @@ Roy Fisher
 .Begin Copyrightnotice
 Copyright \[copyright] 2017, 2018 by Roy Fisher.
 
-This PDF may be freely distributed so long as it is not used for commercial
-purposes in part or in whole or in the body of another document without
-permission, and provided this copyright notice is retained.
+.sp -1.5v
+.BP "by-nc-sa.eps" 0.25i 0.7i l 0i
+.EP
+.sp -2v
+.pshape +0.8i -0 +0 -0 0
+This document is licensed under the
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license.
+Under the terms of this license you are free to share, copy, redistribute,
+transform, adapt, and build upon the work provided appropriate credit is given
+and modified versions are released under the same license.
+You may not use the material for any commercial purpose.
+https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 \*[tex] is a trademark of the American Mathematical Society.
 

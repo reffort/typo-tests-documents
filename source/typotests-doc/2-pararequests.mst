@@ -47,7 +47,7 @@ register @b[\en[.elpchar]] followed by the new characters:
 .\" add them
 .elpchar \n[.elpchar]\[quotedblright]»
 .
-adds the right double quote and right guillemot:
+adds the right double quote and right guillemet:
 .@f \&\n[.elpchar]
 \&\~.
 

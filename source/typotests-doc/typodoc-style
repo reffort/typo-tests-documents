@@ -164,8 +164,8 @@
 .Define Titlepage break before pagebreak after centered yes headers off
 .Define Titlebox break before fixed 8v font LST size 12 indent +0
 .Define Authorbox use Titlebox fixed 14v font C
-.Define Copyrightnotice font R size 10p spacing 12p spread 0.25v \
-        indent +0 justify left below 0 float bottom
+.Define Copyrightnotice font R size 10p spacing 12p spread 0.5v \
+        indent +0 justify both hy 0 below 0 float bottom
 .
 .Counter H1counter format 1
 .Counter Figurecounter format 1

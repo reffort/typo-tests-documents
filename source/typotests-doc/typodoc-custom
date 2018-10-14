@@ -8,8 +8,8 @@
 .\"	be set up using the @String command and referenced with @Value.
 .
 .ds hanthanh H\[`a]n Th\[e^'] Th\[`a]nh
-.ds nroff \@{Nroff\@}
-.ds troff \@{Troff\@}
+.ds nroff \@{nroff\@}
+.ds troff \@{troff\@}
 .ds ntroff \@{n\(hyt\(hyroff\@}
 .ds TEX \@{T\h'-.08m'\v'0.2m'E\v'-0.2m'\h'-0.05m'X\@}
 .ds pdfTEX \@{\f(ACpdf\fP\\*[TEX]\@}

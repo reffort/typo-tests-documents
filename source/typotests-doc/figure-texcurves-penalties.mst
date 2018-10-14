@@ -136,7 +136,8 @@ for j from 0.55 to 1.65 by 0.01 do {
 #	yval = (1+(100*i^3)^2)/10000
 #
 #	i^6
-	yval = i^6 + hypp1 + sqrt(linepenalty*100)/100
+#	yval = i^6 + hypp1 + sqrt(linepenalty*100)/100
+	yval = i^6 + hypp1
 	if (yval < yclip) then { next tc at j, yval }
 
 #	wscalc 10, TeX82
@@ -230,7 +231,8 @@ yofs = 0 #0.007
 for j from 0.55 to 1.65 by 0.025 do {
 	if (j >= 1.0) then { i = (j - 1) * 5 / 3 } else { i = 1 - j }
         i = i + hypp1 * 2
-        yval = i^3 + sqrt(linepenalty*100)/100
+#        yval = i^3 + sqrt(linepenalty*100)/100
+        yval = i^3
 	if (yval < yclip) then {
 		next hc at j, yval
 		circle at j+xofs, yval+yofs radius 0.025
@@ -450,22 +452,22 @@ gsize 10.8
 .@Labeltag figure:texcurves-penalties
 
 .@Begin Captiontext
+With @i[hypp1] = 50.
 For @req[.wscalc 10], @i[linepenalty] = 10;
-for @req[.wscalc 11], @i[linepenalty] = 1;
-for @req[.wscalc\~12], @i[linepenalty] = 0;
-for @req[.wscalc 6] and @req[0], $linepenalty = sqrt {10}$ .
+for @req[.wscalc 11], @i[linepenalty]\~=\~1;
+all others, @i[linepenalty] = 0.
 Applied penalty values are the user inputs divided by 100.
 
-Curves 10, 12, and 6 are shifted upward by the value of @i[hypp1].
+Curves 6, 10, and 12 are shifted upward by the value of @i[hypp1].
 With curve\~10, if @i[linepenalty] is increased, the curve begins to distort
-like curve\~11.  Curves 12 and 6 do not have this distortion.
+like curve\~11.  Curves 6 and 12 do not have this distortion.
 
-Curve\~11 is shifted upward by $sqrt { italic "hypp1" }$ .  The effective hyphenation
+Curve\~11 is shifted upward by $sqrt { italic "hypp1" }$.  The effective hyphenation
 penalty near the center of the range is less than @i[hypp1]; farther away
 it becomes greater than @i[hypp1].
 
 Curve 0 is shifted upward by
-$up 20 { "" sup 3 } back 35 sqrt { 2 times italic "hypp1" }$ .
+$up 5 { "" sup 3 } back 35 sqrt { 2 times italic "hypp1" }$.
 The curve becomes severely distorted due to the interaction between
 @i[hypp1] and the adjustment ratio $r$.
 
